@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Tutorial_App.Models
+namespace TutorialApp.Models
 {
     public class Course
     {
@@ -9,6 +9,8 @@ namespace Tutorial_App.Models
         public string Description { get; set; }
         public int CategoryId { get; set; }
         public decimal Price { get; set; }
+
+        public string CourseImageUrl { get; set; }
 
         public Category Category { get; set; }
         public ICollection<Module> Modules { get; set; }

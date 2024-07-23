@@ -1,4 +1,4 @@
-﻿namespace Tutorial_App.Models
+﻿namespace TutorialApp.Models
 {
     public class Quiz
     {
