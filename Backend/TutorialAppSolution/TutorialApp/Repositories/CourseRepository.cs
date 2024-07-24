@@ -1,53 +1,53 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TutorialApp.Contexts;
-using TutorialApp.Exceptions.User;
+using TutorialApp.Exceptions.Course;
 using TutorialApp.Interfaces;
 using TutorialApp.Models;
 
 namespace TutorialApp.Repositories
 {
-    public class UserRepository : IRepository<string, User>
+    public class CourseRepository : IRepository<int, Course>
     {
         private readonly TutorialAppContext _context;
 
-        public UserRepository(TutorialAppContext context)
+        public CourseRepository(TutorialAppContext context)
         {
             _context = context;
         }
 
-        public async Task<User> Add(User item)
+        public async Task<Course> Add(Course item)
         {
-            _context.Users.Add(item);
+            _context.Courses.Add(item);
             await _context.SaveChangesAsync();
             return item;
         }
 
-        public async Task<User> DeleteByKey(string key)
+        public async Task<Course> DeleteByKey(int key)
         {
             var item = await GetByKey(key);
             if (item == null)
             {
                 return null;
             }
-            _context.Users.Remove(item);
+            _context.Courses.Remove(item);
             await _context.SaveChangesAsync();
             return item;
         }
 
-        public async Task<IEnumerable<User>> Get()
+        public async Task<IEnumerable<Course>> Get()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Courses.ToListAsync();
         }
 
-        public async Task<User> GetByKey(string key)
+        public async Task<Course> GetByKey(int key)
         {
-            var item = await _context.Users.FirstOrDefaultAsync(c => c.Email == key);
+            var item = await _context.Courses.FirstOrDefaultAsync(c => c.CourseId == key);
             return item;
         }
 
-        public async Task<User> Update(User item)
+        public async Task<Course> Update(Course item)
         {
-            var existingItem = await GetByKey(item.Email);
+            var existingItem = await GetByKey(item.CourseId);
             if (existingItem != null)
             {
                 _context.Entry(existingItem).State = EntityState.Detached;
@@ -58,7 +58,7 @@ namespace TutorialApp.Repositories
                 await _context.SaveChangesAsync();
                 return item;
             }
-            throw new NoSuchUserFoundException();
+            throw new NoSuchCourseFoundException();
         }
     }
 }

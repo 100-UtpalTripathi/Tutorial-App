@@ -84,7 +84,15 @@ namespace Tutorial_App
             #endregion
 
             #region Repositories
-
+            builder.Services.AddScoped<IRepository<Module>, ModuleRepository>();
+            builder.Services.AddScoped<IRepository<Question>, QuestionRepository>();
+            builder.Services.AddScoped<IRepository<Quiz>, QuizRepository>();
+            builder.Services.AddScoped<IRepository<Wishlist>, WishlistRepository>();
+            builder.Services.AddScoped<IRepository<User>, UserRepository>();
+            builder.Services.AddScoped<IRepository<Cart>, CartRepository>();
+            builder.Services.AddScoped<IRepository<Category>, CategoryRepository>();
+            builder.Services.AddScoped<IRepository<Course>, CourseRepository>();
+            builder.Services.AddScoped<IRepository<Enrollment>, EnrollmentRepository>();
 
             #endregion
 

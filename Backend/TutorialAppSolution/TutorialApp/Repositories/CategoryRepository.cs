@@ -1,53 +1,53 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TutorialApp.Contexts;
-using TutorialApp.Exceptions.User;
+using TutorialApp.Exceptions.Category;
 using TutorialApp.Interfaces;
 using TutorialApp.Models;
 
 namespace TutorialApp.Repositories
 {
-    public class UserRepository : IRepository<string, User>
+    public class CategoryRepository : IRepository<int, Category>
     {
         private readonly TutorialAppContext _context;
 
-        public UserRepository(TutorialAppContext context)
+        public CategoryRepository(TutorialAppContext context)
         {
             _context = context;
         }
 
-        public async Task<User> Add(User item)
+        public async Task<Category> Add(Category item)
         {
-            _context.Users.Add(item);
+            _context.Categories.Add(item);
             await _context.SaveChangesAsync();
             return item;
         }
 
-        public async Task<User> DeleteByKey(string key)
+        public async Task<Category> DeleteByKey(int key)
         {
             var item = await GetByKey(key);
             if (item == null)
             {
                 return null;
             }
-            _context.Users.Remove(item);
+            _context.Categories.Remove(item);
             await _context.SaveChangesAsync();
             return item;
         }
 
-        public async Task<IEnumerable<User>> Get()
+        public async Task<IEnumerable<Category>> Get()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Categories.ToListAsync();
         }
 
-        public async Task<User> GetByKey(string key)
+        public async Task<Category> GetByKey(int key)
         {
-            var item = await _context.Users.FirstOrDefaultAsync(c => c.Email == key);
+            var item = await _context.Categories.FirstOrDefaultAsync(c => c.CategoryId == key);
             return item;
         }
 
-        public async Task<User> Update(User item)
+        public async Task<Category> Update(Category item)
         {
-            var existingItem = await GetByKey(item.Email);
+            var existingItem = await GetByKey(item.CategoryId);
             if (existingItem != null)
             {
                 _context.Entry(existingItem).State = EntityState.Detached;
@@ -58,7 +58,7 @@ namespace TutorialApp.Repositories
                 await _context.SaveChangesAsync();
                 return item;
             }
-            throw new NoSuchUserFoundException();
+            throw new NoSuchCategoryFoundException();
         }
     }
 }

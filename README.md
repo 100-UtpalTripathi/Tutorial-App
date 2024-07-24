@@ -55,6 +55,13 @@
    - **View Profile**
      - Users can view and edit their profile information.
 
+### Business Logic
+
+- **Course Progress Tracking**
+  - Track user progress on courses as registered, started, or completed.
+- **Discounts**
+  - Provide a 10% discount on the next course purchase if a user completes 3 courses.
+
 ## Non-functional Requirements
 
 9. **Security and Data Privacy**

@@ -1,51 +1,51 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TutorialApp.Contexts;
-using TutorialApp.Exceptions.User;
+using TutorialApp.Exceptions.UserCredential;
 using TutorialApp.Interfaces;
 using TutorialApp.Models;
 
 namespace TutorialApp.Repositories
 {
-    public class UserRepository : IRepository<string, User>
+    public class UserCredentialRepository : IRepository<string, UserCredential>
     {
         private readonly TutorialAppContext _context;
 
-        public UserRepository(TutorialAppContext context)
+        public UserCredentialRepository(TutorialAppContext context)
         {
             _context = context;
         }
 
-        public async Task<User> Add(User item)
+        public async Task<UserCredential> Add(UserCredential item)
         {
-            _context.Users.Add(item);
+            _context.UserCredentials.Add(item);
             await _context.SaveChangesAsync();
             return item;
         }
 
-        public async Task<User> DeleteByKey(string key)
+        public async Task<UserCredential> DeleteByKey(string key)
         {
             var item = await GetByKey(key);
             if (item == null)
             {
                 return null;
             }
-            _context.Users.Remove(item);
+            _context.UserCredentials.Remove(item);
             await _context.SaveChangesAsync();
             return item;
         }
 
-        public async Task<IEnumerable<User>> Get()
+        public async Task<IEnumerable<UserCredential>> Get()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.UserCredentials.ToListAsync();
         }
 
-        public async Task<User> GetByKey(string key)
+        public async Task<UserCredential> GetByKey(string key)
         {
-            var item = await _context.Users.FirstOrDefaultAsync(c => c.Email == key);
+            var item = await _context.UserCredentials.FirstOrDefaultAsync(c => c.Email == key);
             return item;
         }
 
-        public async Task<User> Update(User item)
+        public async Task<UserCredential> Update(UserCredential item)
         {
             var existingItem = await GetByKey(item.Email);
             if (existingItem != null)
@@ -58,7 +58,7 @@ namespace TutorialApp.Repositories
                 await _context.SaveChangesAsync();
                 return item;
             }
-            throw new NoSuchUserFoundException();
+            throw new NoSuchUserCredentialFoundException();
         }
     }
 }

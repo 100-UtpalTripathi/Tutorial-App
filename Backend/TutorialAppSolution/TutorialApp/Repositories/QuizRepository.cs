@@ -1,53 +1,53 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TutorialApp.Contexts;
-using TutorialApp.Exceptions.User;
+using TutorialApp.Exceptions.Quiz;
 using TutorialApp.Interfaces;
 using TutorialApp.Models;
 
 namespace TutorialApp.Repositories
 {
-    public class UserRepository : IRepository<string, User>
+    public class QuizRepository : IRepository<int, Quiz>
     {
         private readonly TutorialAppContext _context;
 
-        public UserRepository(TutorialAppContext context)
+        public QuizRepository(TutorialAppContext context)
         {
             _context = context;
         }
 
-        public async Task<User> Add(User item)
+        public async Task<Quiz> Add(Quiz item)
         {
-            _context.Users.Add(item);
+            _context.Quizzes.Add(item);
             await _context.SaveChangesAsync();
             return item;
         }
 
-        public async Task<User> DeleteByKey(string key)
+        public async Task<Quiz> DeleteByKey(int key)
         {
             var item = await GetByKey(key);
             if (item == null)
             {
                 return null;
             }
-            _context.Users.Remove(item);
+            _context.Quizzes.Remove(item);
             await _context.SaveChangesAsync();
             return item;
         }
 
-        public async Task<IEnumerable<User>> Get()
+        public async Task<IEnumerable<Quiz>> Get()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Quizzes.ToListAsync();
         }
 
-        public async Task<User> GetByKey(string key)
+        public async Task<Quiz> GetByKey(int key)
         {
-            var item = await _context.Users.FirstOrDefaultAsync(c => c.Email == key);
+            var item = await _context.Quizzes.FirstOrDefaultAsync(c => c.QuizId == key);
             return item;
         }
 
-        public async Task<User> Update(User item)
+        public async Task<Quiz> Update(Quiz item)
         {
-            var existingItem = await GetByKey(item.Email);
+            var existingItem = await GetByKey(item.QuizId);
             if (existingItem != null)
             {
                 _context.Entry(existingItem).State = EntityState.Detached;
@@ -58,7 +58,7 @@ namespace TutorialApp.Repositories
                 await _context.SaveChangesAsync();
                 return item;
             }
-            throw new NoSuchUserFoundException();
+            throw new NoSuchQuizFoundException();
         }
     }
 }
