@@ -15,7 +15,7 @@ namespace TutorialApp.Models
         public User User { get; set; }
 
         [Required]
-        public byte[] PasswordHash { get; set; }
+        public byte[] PasswordHashKey { get; set; }
 
         [Required]
         public byte[]  Password { get; set; }
