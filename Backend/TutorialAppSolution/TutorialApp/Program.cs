@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Azure.Storage.Blobs;
 
 namespace Tutorial_App
 {
@@ -35,6 +36,7 @@ namespace Tutorial_App
             //builder.Services.AddLogging(l => l.AddLog4Net());
 
 
+            #region Swagger
             builder.Services.AddSwaggerGen(option =>
             {
                 option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
@@ -61,7 +63,10 @@ namespace Tutorial_App
                     }
                 });
             });
-            //Debug.WriteLine(builder.Configuration["TokenKey:JWT"]);
+
+            #endregion
+
+            #region JWT
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -75,6 +80,16 @@ namespace Tutorial_App
 
                 });
 
+            #endregion
+
+            #region AzureBlob
+            builder.Services.AddSingleton(x =>
+            {
+                var configuration = x.GetRequiredService<IConfiguration>();
+                return new BlobServiceClient(configuration.GetConnectionString("azureBlobStorage"));
+            });
+
+            #endregion
 
 
             #region Contexts
@@ -84,20 +99,24 @@ namespace Tutorial_App
             #endregion
 
             #region Repositories
-            builder.Services.AddScoped<IRepository<Module>, ModuleRepository>();
-            builder.Services.AddScoped<IRepository<Question>, QuestionRepository>();
-            builder.Services.AddScoped<IRepository<Quiz>, QuizRepository>();
-            builder.Services.AddScoped<IRepository<Wishlist>, WishlistRepository>();
-            builder.Services.AddScoped<IRepository<User>, UserRepository>();
-            builder.Services.AddScoped<IRepository<Cart>, CartRepository>();
-            builder.Services.AddScoped<IRepository<Category>, CategoryRepository>();
-            builder.Services.AddScoped<IRepository<Course>, CourseRepository>();
-            builder.Services.AddScoped<IRepository<Enrollment>, EnrollmentRepository>();
+            builder.Services.AddScoped<IRepository<int, Module>, ModuleRepository>();
+            builder.Services.AddScoped<IRepository<int, Question>, QuestionRepository>();
+            builder.Services.AddScoped<IRepository<int, Quiz>, QuizRepository>();
+            builder.Services.AddScoped<IRepository<int, Wishlist>, WishlistRepository>();
+            builder.Services.AddScoped<IRepository<String, User>, UserRepository>();
+            builder.Services.AddScoped<IRepository<int, Cart>, CartRepository>();
+            builder.Services.AddScoped<IRepository<int, Category>, CategoryRepository>();
+            builder.Services.AddScoped<IRepository<int, Course>, CourseRepository>();
+            builder.Services.AddScoped<IRepository<int, Enrollment>, EnrollmentRepository>();
+            builder.Services.AddScoped<IRepository<string, UserCredential>, UserCredentialRepository>();
 
             #endregion
 
             #region Services
-
+            builder.Services.AddScoped<IAdminService, AdminService>();
+            builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IAzureBlobService, AzureBlobService>();
 
 
             #endregion
