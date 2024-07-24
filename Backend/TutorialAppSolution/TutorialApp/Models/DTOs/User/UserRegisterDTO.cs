@@ -20,7 +20,9 @@ namespace TutorialApp.Models.DTOs.User
         [MaxLength(20)]
         public string Phone { get; set; }
 
-        public string ImageURI { get; set; }
+        public IFormFile Image { get; set; }
+
+        public string? ImageUri { get; set; }
 
         [Required]
         [MaxLength(50)]

@@ -73,7 +73,7 @@ namespace TutorialApp.Services
                     Name = userRegisterDTO.Name,
                     Dob = userRegisterDTO.Dob,
                     Phone = userRegisterDTO.Phone,
-                    ImageURI = userRegisterDTO.ImageURI
+                    ImageURI = userRegisterDTO.ImageUri
                 };
 
                 HMACSHA512 hMACSHA = new HMACSHA512();
