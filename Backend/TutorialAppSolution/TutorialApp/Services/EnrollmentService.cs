@@ -6,6 +6,7 @@ namespace TutorialApp.Services
 {
     public class EnrollmentService : IEnrollmentService
     {
+        #region Dependency Injection
         private readonly IRepository<int, Enrollment> _enrollmentRepository;
         private readonly IRepository<int, Course> _courseRepository;
 
@@ -15,6 +16,10 @@ namespace TutorialApp.Services
             _courseRepository = courseRepository;
         }
 
+        #endregion
+
+
+        #region Enroll Course
         public async Task<Enrollment> EnrollCourseAsync(EnrollmentDTO enrollmentDTO)
         {
             var enrollment = new Enrollment
@@ -26,6 +31,10 @@ namespace TutorialApp.Services
             };
             return await _enrollmentRepository.Add(enrollment);
         }
+
+        #endregion
+
+        #region Get Enrolled Courses By User
 
         public async Task<IEnumerable<Course>> GetEnrolledCoursesByUserAsync(string userEmail)
         {
@@ -45,6 +54,10 @@ namespace TutorialApp.Services
             return courses;
         }
 
+        #endregion
+
+        #region Update Enrollment Status
+
         public async Task<Enrollment> UpdateEnrollmentStatusAsync(EnrollmentDTO enrollmentDTO)
         {
             var enrollments = await _enrollmentRepository.Get();
@@ -60,5 +73,7 @@ namespace TutorialApp.Services
             }
             throw new Exception("Enrollment not found.");
         }
+
+        #endregion
     }
 }

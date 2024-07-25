@@ -7,5 +7,7 @@ namespace TutorialApp.Interfaces
     {
         Task<Wishlist> AddToWishlistAsync(WishListDTO wishlistDTO);
         Task<IEnumerable<Course>> GetWishlistedCoursesByUserAsync(string userEmail);
+
+        Task<Wishlist> RemoveFromWishlistAsync(WishListDTO wishlistDTO);
     }
 }

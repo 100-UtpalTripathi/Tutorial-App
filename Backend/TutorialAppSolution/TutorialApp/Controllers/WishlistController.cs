@@ -17,14 +17,14 @@ namespace TutorialApp.Controllers
             _wishlistService = wishlistService;
         }
 
-        [HttpPost]
+        [HttpPost("add")]
         public async Task<ActionResult<Wishlist>> AddToWishlist([FromBody] WishListDTO wishlistDTO)
         {
             var createdWishlist = await _wishlistService.AddToWishlistAsync(wishlistDTO);
             return CreatedAtAction(nameof(GetWishlistedCoursesByUser), new { userEmail = createdWishlist.UserEmail }, createdWishlist);
         }
 
-        [HttpGet("{userEmail}")]
+        [HttpGet("get/{userEmail}")]
         public async Task<ActionResult<IEnumerable<Course>>> GetWishlistedCoursesByUser(string userEmail)
         {
             var courses = await _wishlistService.GetWishlistedCoursesByUserAsync(userEmail);
@@ -33,6 +33,17 @@ namespace TutorialApp.Controllers
                 return NotFound();
             }
             return Ok(courses);
+        }
+
+        [HttpDelete("remove")]
+        public async Task<ActionResult<Wishlist>> RemoveFromWishlist([FromBody] WishListDTO wishlistDTO)
+        {
+            var removedWishlist = await _wishlistService.RemoveFromWishlistAsync(wishlistDTO);
+            if (removedWishlist == null)
+            {
+                return NotFound();
+            }
+            return Ok(removedWishlist);
         }
     }
 }

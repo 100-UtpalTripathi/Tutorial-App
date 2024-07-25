@@ -6,6 +6,8 @@ namespace TutorialApp.Services
 {
     public class WishlistService : IWishlistService
     {
+
+        #region Dependency Injection
         private readonly IRepository<int, Wishlist> _wishlistRepository;
         private readonly IRepository<int, Course> _courseRepository;
 
@@ -14,6 +16,10 @@ namespace TutorialApp.Services
             _wishlistRepository = wishlistRepository;
             _courseRepository = courseRepository;
         }
+
+        #endregion
+
+        #region Add To Wishlist
 
         public async Task<Wishlist> AddToWishlistAsync(WishListDTO wishlistDTO)
         {
@@ -24,6 +30,25 @@ namespace TutorialApp.Services
             };
             return await _wishlistRepository.Add(wishlist);
         }
+
+        #endregion
+
+        #region Remove From Wishlist
+        public async Task<Wishlist> RemoveFromWishlistAsync(WishListDTO wishlistDTO)
+        {
+            var wishlists = await _wishlistRepository.Get();
+            var wishlist = wishlists.FirstOrDefault(w => w.UserEmail == wishlistDTO.UserEmail && w.CourseId == wishlistDTO.CourseId);
+
+            if (wishlist == null)
+            {
+                throw new Exception("Item not found in wishlist.");
+            }
+
+            return await _wishlistRepository.DeleteByKey(wishlist.WishlistId);
+        }
+        #endregion
+
+        #region Get Wishlisted Courses By User
 
         public async Task<IEnumerable<Course>> GetWishlistedCoursesByUserAsync(string userEmail)
         {
@@ -42,5 +67,7 @@ namespace TutorialApp.Services
 
             return courses;
         }
+
+        #endregion
     }
 }
