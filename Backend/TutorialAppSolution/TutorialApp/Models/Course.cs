@@ -13,6 +13,8 @@ namespace TutorialApp.Models
         public string CourseImageUrl { get; set; }
 
         public Category Category { get; set; }
+
+        public String InstructorName { get; set; }
         public ICollection<Module> Modules { get; set; }
         public ICollection<Enrollment> Enrollments { get; set; }
         public ICollection<Wishlist> Wishlists { get; set; }
