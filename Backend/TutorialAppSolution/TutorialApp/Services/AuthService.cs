@@ -49,6 +49,8 @@ namespace TutorialApp.Services
                         Email = user.Email,
                         Role = user.Role
                     };
+
+                    return userLoginReturnDTO;
                 }
             }
 

@@ -1,4 +1,5 @@
-﻿using TutorialApp.Interfaces;
+﻿using TutorialApp.Exceptions.Course;
+using TutorialApp.Interfaces;
 using TutorialApp.Models;
 using TutorialApp.Models.DTOs.Course;
 using TutorialApp.Models.DTOs.User;
@@ -7,24 +8,61 @@ namespace TutorialApp.Services
 {
     public class AdminService : IAdminService
     {
-        public Task<CourseReturnDTO> CreateCourseAsync(CourseDTO courseDTO)
+        private readonly IRepository<int, Course> _courseRepository;
+
+        public AdminService(IRepository<int, Course> courseRepository)
         {
-            throw new NotImplementedException();
+            _courseRepository = courseRepository;
         }
 
-        public Task<CourseReturnDTO> DeleteCourseAsync(int courseId)
+        public async Task<Course> CreateCourseAsync(CourseDTO courseDTO)
         {
-            throw new NotImplementedException();
+            var course = new Course
+            {
+                Title = courseDTO.Title,
+                Description = courseDTO.Description,
+                CategoryId = courseDTO.CategoryId,
+                Price = courseDTO.Price,
+                CourseImageUrl = courseDTO.CourseImageUrl,
+                InstructorName = courseDTO.InstructorName
+            };
+
+            var createdCourse = await _courseRepository.Add(course);
+            return createdCourse;
         }
 
-        public Task<IEnumerable<Course>> GetAllCoursesAsync()
+        public async Task<Course> DeleteCourseAsync(int courseId)
         {
-            throw new NotImplementedException();
+            var deletedCourse = await _courseRepository.DeleteByKey(courseId);
+            if (deletedCourse == null)
+            {
+                throw new NoSuchCourseFoundException();
+            }
+            return deletedCourse;
         }
 
-        public Task<CourseReturnDTO> UpdateCourseAsync(CourseDTO courseDTO)
+        public async Task<IEnumerable<Course>> GetAllCoursesAsync()
         {
-            throw new NotImplementedException();
+            return await _courseRepository.Get();
+        }
+
+        public async Task<Course> UpdateCourseAsync(int courseId, CourseDTO courseDTO)
+        {
+            var existingCourse = await _courseRepository.GetByKey(courseId);
+            if (existingCourse == null)
+            {
+                throw new NoSuchCourseFoundException();
+            }
+
+            existingCourse.Title = courseDTO.Title;
+            existingCourse.Description = courseDTO.Description;
+            existingCourse.CategoryId = courseDTO.CategoryId;
+            existingCourse.Price = courseDTO.Price;
+            existingCourse.CourseImageUrl = courseDTO.CourseImageUrl;
+            existingCourse.InstructorName = courseDTO.InstructorName;
+
+            var updatedCourse = await _courseRepository.Update(existingCourse);
+            return updatedCourse;
         }
     }
 }

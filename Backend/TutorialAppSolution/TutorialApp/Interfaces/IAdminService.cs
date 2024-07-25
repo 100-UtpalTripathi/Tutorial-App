@@ -6,9 +6,9 @@ namespace TutorialApp.Interfaces
 {
     public interface IAdminService
     {
-        Task<CourseReturnDTO> CreateCourseAsync(CourseDTO courseDTO);
-        Task<CourseReturnDTO> UpdateCourseAsync(CourseDTO courseDTO);
-        Task<CourseReturnDTO> DeleteCourseAsync(int courseId);
+        Task<Course> CreateCourseAsync(CourseDTO courseDTO);
+        Task<Course> UpdateCourseAsync(int courseId, CourseDTO courseDTO);
+        Task<Course> DeleteCourseAsync(int courseId);
         Task<IEnumerable<Course>> GetAllCoursesAsync();
     }
 }

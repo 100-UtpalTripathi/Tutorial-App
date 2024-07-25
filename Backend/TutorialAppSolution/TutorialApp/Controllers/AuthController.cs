@@ -23,7 +23,7 @@ namespace TutorialApp.Controllers
             if(userRegisterDTO.Image != null)
             {
                 var fileStream = userRegisterDTO.Image.OpenReadStream();
-                var result = await _azureBlobService.UploadFileAsync("tutorialapp", "user", userRegisterDTO.Image.FileName,
+                var result = await _azureBlobService.UploadFileAsync("tutorialapp", "userProfile", userRegisterDTO.Phone + userRegisterDTO.Image.FileName,
                     fileStream);
 
                 if (result.IsError)
