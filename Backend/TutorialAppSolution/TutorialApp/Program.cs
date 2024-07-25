@@ -120,6 +120,7 @@ namespace Tutorial_App
             builder.Services.AddScoped<IQuizService, QuizService>();
             //builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IWishlistService, WishlistService>();
+            builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
 
 
 
