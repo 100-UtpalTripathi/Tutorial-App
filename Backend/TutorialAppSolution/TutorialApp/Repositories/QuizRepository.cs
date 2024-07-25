@@ -36,12 +36,16 @@ namespace TutorialApp.Repositories
 
         public async Task<IEnumerable<Quiz>> Get()
         {
-            return await _context.Quizzes.ToListAsync();
+            return await _context.Quizzes
+                .Include(q => q.Questions)
+                .ToListAsync();
         }
 
         public async Task<Quiz> GetByKey(int key)
         {
-            var item = await _context.Quizzes.FirstOrDefaultAsync(c => c.QuizId == key);
+            var item = await _context.Quizzes
+                .Include(q => q.Questions)
+                .FirstOrDefaultAsync(c => c.QuizId == key);
             return item;
         }
 
