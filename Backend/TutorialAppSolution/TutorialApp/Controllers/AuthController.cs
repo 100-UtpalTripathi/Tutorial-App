@@ -18,7 +18,7 @@ namespace TutorialApp.Controllers
         }
 
         [HttpPost("user/register")]
-        public async Task<IActionResult> RegisterAsync(UserRegisterDTO userRegisterDTO)
+        public async Task<IActionResult> RegisterAsync([FromBody] UserRegisterDTO userRegisterDTO)
         {
             if(userRegisterDTO.Image != null)
             {
@@ -48,7 +48,7 @@ namespace TutorialApp.Controllers
         }
 
         [HttpPost("user/login")]
-        public async Task<IActionResult> LoginAsync(UserLoginDTO userLoginDTO)
+        public async Task<IActionResult> LoginAsync([FromBody] UserLoginDTO userLoginDTO)
         {
             var response = await _authService.LoginAsync(userLoginDTO);
             if (response == null)

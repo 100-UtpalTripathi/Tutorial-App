@@ -4,6 +4,8 @@ using TutorialApp.Exceptions.Course;
 using TutorialApp.Interfaces;
 using TutorialApp.Models.DTOs.Course;
 using TutorialApp.Models;
+using TutorialApp.Models.DTOs.User;
+using TutorialApp.Services;
 
 namespace TutorialApp.Controllers
 {
@@ -12,10 +14,11 @@ namespace TutorialApp.Controllers
     public class CoursesController : ControllerBase
     {
         private readonly IAdminService _adminService;
-
-        public CoursesController(IAdminService adminService)
+        private readonly IAzureBlobService _azureBlobService;
+        public CoursesController(IAdminService adminService, IAzureBlobService azureBlobService)
         {
             _adminService = adminService;
+            _azureBlobService = azureBlobService;
         }
 
         [HttpGet]
@@ -26,11 +29,23 @@ namespace TutorialApp.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<ActionResult<Course>> CreateCourse([FromForm] CourseDTO courseDTO)
+        public async Task<ActionResult<Course>> CreateCourse([FromBody] CourseDTO courseDTO)
         {
-            if (courseDTO == null)
+            if (courseDTO.Image != null)
             {
-                return BadRequest();
+                var fileStream = courseDTO.Image.OpenReadStream();
+                var result = await _azureBlobService.UploadFileAsync("tutorialapp", "CourseImages", courseDTO.CategoryId + courseDTO.InstructorName + courseDTO.Image.FileName,
+                fileStream);
+                if (result.IsError)
+                {
+                    return BadRequest(result);
+                }
+
+                courseDTO.CourseImageUrl = result.FileUri.ToString();
+            }
+            else
+            {
+                courseDTO.CourseImageUrl = null;
             }
 
             var response = await _adminService.CreateCourseAsync(courseDTO);

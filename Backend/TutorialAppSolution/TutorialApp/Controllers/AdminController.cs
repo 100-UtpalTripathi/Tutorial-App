@@ -19,7 +19,7 @@ namespace TutorialApp.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> LoginAdminAsync(UserLoginDTO adminLoginDTO)
+        public async Task<IActionResult> LoginAdminAsync([FromBody] UserLoginDTO adminLoginDTO)
         {
             var response = await _authService.LoginAsync(adminLoginDTO);
             if (response == null)
