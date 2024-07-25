@@ -14,6 +14,9 @@ namespace TutorialApp.Models
         [Required]
         public int CourseId { get; set; }
 
+        [Required]
+        public decimal Price { get; set; }
+
         [ForeignKey("UserEmail")]
         public User User { get; set; }
         public Course Course { get; set; }

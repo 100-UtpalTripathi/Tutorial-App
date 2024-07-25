@@ -8,6 +8,7 @@ namespace TutorialApp.Services
 {
     public class AdminService : IAdminService
     {
+        #region Dependency Injection
         private readonly IRepository<int, Course> _courseRepository;
 
         public AdminService(IRepository<int, Course> courseRepository)
@@ -15,6 +16,10 @@ namespace TutorialApp.Services
             _courseRepository = courseRepository;
         }
 
+        #endregion
+
+
+        #region Create Course
         public async Task<Course> CreateCourseAsync(CourseDTO courseDTO)
         {
             var course = new Course
@@ -31,6 +36,10 @@ namespace TutorialApp.Services
             return createdCourse;
         }
 
+        #endregion
+
+        #region Delete Course
+
         public async Task<Course> DeleteCourseAsync(int courseId)
         {
             var deletedCourse = await _courseRepository.DeleteByKey(courseId);
@@ -41,10 +50,18 @@ namespace TutorialApp.Services
             return deletedCourse;
         }
 
+        #endregion
+
+        #region Get All Courses
+
         public async Task<IEnumerable<Course>> GetAllCoursesAsync()
         {
             return await _courseRepository.Get();
         }
+
+        #endregion
+
+        #region Update Course
 
         public async Task<Course> UpdateCourseAsync(int courseId, CourseDTO courseDTO)
         {
@@ -64,5 +81,7 @@ namespace TutorialApp.Services
             var updatedCourse = await _courseRepository.Update(existingCourse);
             return updatedCourse;
         }
+
+        #endregion
     }
 }

@@ -7,10 +7,17 @@ namespace TutorialApp.Services
 {
     public class AzureBlobService : IAzureBlobService
     {
+
+        #region Dependency Injection
         private readonly BlobServiceClient _blobServiceClient;
         public AzureBlobService(BlobServiceClient blobServiceClient) {
             _blobServiceClient = blobServiceClient;
         }
+
+        #endregion
+
+
+        #region Upload File
         public async Task<AzureBlobResponse> UploadFileAsync(string blobContainer, string directoryName, string fileName, Stream fileStream)
         {
             var BlobResponse = new AzureBlobResponse();
@@ -62,5 +69,7 @@ namespace TutorialApp.Services
             return BlobResponse;
             
         }
+
+        #endregion
     }
 }
