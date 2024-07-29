@@ -1,4 +1,6 @@
 ﻿
+using TutorialApp.Exceptions.Cart;
+using TutorialApp.Exceptions.Course;
 using TutorialApp.Interfaces;
 using TutorialApp.Models;
 using TutorialApp.Models.DTOs.Cart;
@@ -31,7 +33,7 @@ namespace TutorialApp.Services
 
             if (existingCartItem != null)
             {
-                throw new Exception("Item already exists in cart.");
+                throw new DuplicateItemAddingException("Item already exists in cart.");
             }
 
             // Check if the user has completed 3 courses
@@ -42,7 +44,7 @@ namespace TutorialApp.Services
             var course = await _courseRepository.GetByKey(cartDTO.CourseId);
             if (course == null)
             {
-                throw new Exception("Course not found.");
+                throw new NoSuchCourseFoundException("Course not found.");
             }
 
             var price = course.Price;
@@ -74,10 +76,17 @@ namespace TutorialApp.Services
 
             if (existingCartItem == null)
             {
-                throw new Exception("Item not found in cart.");
+                throw new NoSuchCartFoundException("Item not found in cart.");
             }
 
-            return await _cartRepository.DeleteByKey(existingCartItem.CartId);
+            try
+            {
+                return await _cartRepository.DeleteByKey(existingCartItem.CartId);
+            }
+            catch (Exception ex)
+            {
+                throw new CartDeleteFailedException("Failed to delete item from cart.");
+            }
         }
 
         #endregion
@@ -87,7 +96,12 @@ namespace TutorialApp.Services
         public async Task<IEnumerable<Course>> GetCartItemsByUserAsync(string userEmail)
         {
             var existingCartItems = await _cartRepository.Get();
-            var  cartItems = existingCartItems.Where(c => c.UserEmail == userEmail).ToList(); // Get all cart items for the user
+            if(existingCartItems == null)
+            {
+                return new List<Course>();
+            }
+
+            var cartItems = existingCartItems.Where(c => c.UserEmail == userEmail).ToList(); // Get all cart items for the user
 
             var courseIds = cartItems.Select(c => c.CourseId).Distinct();
             var courses = new List<Course>();

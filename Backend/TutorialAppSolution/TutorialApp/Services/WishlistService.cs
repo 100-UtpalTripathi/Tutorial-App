@@ -1,6 +1,7 @@
 ﻿using TutorialApp.Interfaces;
 using TutorialApp.Models.DTOs.Wishlist;
 using TutorialApp.Models;
+using TutorialApp.Exceptions.Wishlist;
 
 namespace TutorialApp.Services
 {
@@ -28,7 +29,16 @@ namespace TutorialApp.Services
                 UserEmail = wishlistDTO.UserEmail,
                 CourseId = wishlistDTO.CourseId
             };
-            return await _wishlistRepository.Add(wishlist);
+
+            try
+            {
+                return await _wishlistRepository.Add(wishlist);
+            }
+            catch (Exception ex)
+            {
+                throw new UnableToAddToWishlistException("Unable to add to wishlist.");
+            }
+            
         }
 
         #endregion
@@ -37,14 +47,27 @@ namespace TutorialApp.Services
         public async Task<Wishlist> RemoveFromWishlistAsync(WishListDTO wishlistDTO)
         {
             var wishlists = await _wishlistRepository.Get();
+
+            if(wishlists == null || wishlists.Count() == 0)
+            {
+                throw new NoSuchWishlistFoundException("No wishlists found.");
+            }
             var wishlist = wishlists.FirstOrDefault(w => w.UserEmail == wishlistDTO.UserEmail && w.CourseId == wishlistDTO.CourseId);
 
             if (wishlist == null)
             {
-                throw new Exception("Item not found in wishlist.");
+                throw new NoSuchWishlistFoundException("No wishlist found.");
             }
 
-            return await _wishlistRepository.DeleteByKey(wishlist.WishlistId);
+            try
+            {
+                return await _wishlistRepository.DeleteByKey(wishlist.WishlistId);
+            }
+            catch (Exception ex)
+            {
+                throw new UnableToRemoveFromWishlistException("Unable to remove from wishlist.");
+            }
+            
         }
         #endregion
 
@@ -53,7 +76,17 @@ namespace TutorialApp.Services
         public async Task<IEnumerable<Course>> GetWishlistedCoursesByUserAsync(string userEmail)
         {
             var wishlists = await _wishlistRepository.Get();
+
+            if (wishlists == null || wishlists.Count() == 0)
+            {
+                throw new NoSuchWishlistFoundException("No wishlists found.");
+            }
             var userWishlists = wishlists.Where(w => w.UserEmail == userEmail);
+
+            if (userWishlists == null || userWishlists.Count() == 0)
+            {
+                throw new NoSuchWishlistFoundException("No wishlists found for the user.");
+            }
             var courses = new List<Course>();
 
             foreach (var wishlist in userWishlists)

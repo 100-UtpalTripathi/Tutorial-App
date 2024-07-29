@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Security.Cryptography;
 using System.Text;
+using TutorialApp.Exceptions.User;
+using TutorialApp.Exceptions.UserCredential;
 using TutorialApp.Interfaces;
 using TutorialApp.Models;
 using TutorialApp.Models.DTOs.User;
@@ -32,7 +34,7 @@ namespace TutorialApp.Services
             var user = await _userRepository.GetByKey(userEmail);
             if (user == null)
             {
-                throw new Exception("User not found.");
+                throw new NoSuchUserFoundException();
             }
 
             return new UserProfileDTO
@@ -56,12 +58,12 @@ namespace TutorialApp.Services
             var user = await _userRepository.GetByKey(userProfileDTO.Email);
             if (user == null)
             {
-                throw new Exception("User not found.");
+                throw new NoSuchUserFoundException();
             }
             var userCredential = await _userCredentialRepository.GetByKey(userProfileDTO.Email);
             if (userCredential == null)
             {
-                throw new Exception("User not found.");
+                throw new NoSuchUserCredentialFoundException();
             }
 
 
@@ -74,11 +76,16 @@ namespace TutorialApp.Services
             HMACSHA512 hMACSHA = new HMACSHA512();
             userCredential.PasswordHashKey = hMACSHA.Key;
             userCredential.Password = hMACSHA.ComputeHash(Encoding.UTF8.GetBytes(userProfileDTO.Password));
-           
-
+            try
+            {
+                await _userRepository.Update(user);
+                await _userCredentialRepository.Update(userCredential);
+            }
+            catch (Exception ex)
+            {
+                throw new UserProfileUpdateFailedException("Error while updating user profile");
+            }
             
-            await _userRepository.Update(user);
-            await _userCredentialRepository.Update(userCredential);
             return userProfileDTO;
         }
 

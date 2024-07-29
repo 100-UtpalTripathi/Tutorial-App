@@ -1,9 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TutorialApp.Interfaces;
+using TutorialApp.Models.DTOs;
 using TutorialApp.Models.DTOs.User;
 using TutorialApp.Models;
 using TutorialApp.Services;
+using TutorialApp.Exceptions.User;
+using TutorialApp.Exceptions.UserCredential;
+using System.Net;
 
 namespace TutorialApp.Controllers
 {
@@ -11,6 +15,7 @@ namespace TutorialApp.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        #region Dependency Injection
         private readonly IUserService _userService;
         private readonly IAzureBlobService _azureBlobService;
 
@@ -20,19 +25,42 @@ namespace TutorialApp.Controllers
             _azureBlobService = azureBlobService;
         }
 
+        #endregion
+
+        #region View Profile
+
         [HttpGet("profile/{userEmail}")]
-        public async Task<ActionResult<UserProfileDTO>> ViewProfile(string userEmail)
+        public async Task<IActionResult> ViewProfile(string userEmail)
         {
-            var profile = await _userService.ViewProfileAsync(userEmail);
-            if (profile == null)
+            try
             {
-                return NotFound();
+                var profile = await _userService.ViewProfileAsync(userEmail);
+                if (profile == null)
+                {
+                    var errorResponse = new ApiResponse<string>((int)HttpStatusCode.NotFound, "User profile not found", null);
+                    return NotFound(errorResponse);
+                }
+                var response = new ApiResponse<UserProfileDTO>((int)HttpStatusCode.OK, "User profile retrieved successfully", profile);
+                return Ok(response);
             }
-            return Ok(profile);
+            catch (NoSuchUserFoundException ex)
+            {
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.NotFound, ex.Message, null);
+                return NotFound(errorResponse);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null);
+                return BadRequest(errorResponse);
+            }
         }
 
+        #endregion
+
+        #region Edit Profile
+
         [HttpPut("profile/update")]
-        public async Task<ActionResult<UserProfileDTO>> EditProfile([FromBody] UserProfileDTO userProfileDTO)
+        public async Task<IActionResult> EditProfile([FromBody] UserProfileDTO userProfileDTO)
         {
             if (userProfileDTO.Image != null)
             {
@@ -42,7 +70,8 @@ namespace TutorialApp.Controllers
 
                 if (result.IsError)
                 {
-                    return BadRequest(result);
+                    var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, "Image Update Error!", null);
+                    return BadRequest(errorResponse);
                 }
 
                 userProfileDTO.ImageUri = result.FileUri.ToString();
@@ -52,19 +81,59 @@ namespace TutorialApp.Controllers
                 userProfileDTO.ImageUri = null;
             }
 
-            var updatedProfile = await _userService.EditProfileAsync(userProfileDTO);
-            if (updatedProfile == null)
+            try
             {
-                return NotFound();
+                var updatedProfile = await _userService.EditProfileAsync(userProfileDTO);
+                if (updatedProfile == null)
+                {
+                    var errorResponse = new ApiResponse<string>((int)HttpStatusCode.NotFound, "User profile not found", null);
+                    return NotFound(errorResponse);
+                }
+                var response = new ApiResponse<UserProfileDTO>((int)HttpStatusCode.OK, "User profile updated successfully", updatedProfile);
+                return Ok(response);
             }
-            return Ok(updatedProfile);
+            catch (NoSuchUserFoundException ex)
+            {
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.NotFound, ex.Message, null);
+                return NotFound(errorResponse);
+            }
+            catch (NoSuchUserCredentialFoundException ex)
+            {
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.NotFound, ex.Message, null);
+                return NotFound(errorResponse);
+            }
+            catch (UserProfileUpdateFailedException ex)
+            {
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null);
+                return BadRequest(errorResponse);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null);
+                return BadRequest(errorResponse);
+            }
         }
 
+        #endregion
+
+        #region Search Courses By Category
+
         [HttpGet("courses/get/{category}")]
-        public async Task<ActionResult<IEnumerable<Course>>> SearchCoursesByCategory(string category)
+        public async Task<IActionResult> SearchCoursesByCategory(string category)
         {
-            var courses = await _userService.SearchCoursesByCategoryAsync(category);
-            return Ok(courses);
+            try
+            {
+                var courses = await _userService.SearchCoursesByCategoryAsync(category);
+                var response = new ApiResponse<IEnumerable<Course>>((int)HttpStatusCode.OK, "Courses retrieved successfully", courses);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null);
+                return BadRequest(errorResponse);
+            }
         }
+
+        #endregion
     }
 }
