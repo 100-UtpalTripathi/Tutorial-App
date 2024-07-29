@@ -14,12 +14,14 @@ namespace TutorialApp.Services
         private readonly IRepository<int, Cart> _cartRepository;
         private readonly IRepository<int, Course> _courseRepository;
         private readonly IRepository<int, Enrollment> _enrollmentRepository;
+        private readonly ILogger<CartService> _logger;
 
-        public CartService(IRepository<int, Cart> cartRepository, IRepository<int, Course> courseRepository, IRepository<int, Enrollment> enrollmentRepository)
+        public CartService(IRepository<int, Cart> cartRepository, IRepository<int, Course> courseRepository, IRepository<int, Enrollment> enrollmentRepository, ILogger<CartService> logger)
         {
             _cartRepository = cartRepository;
             _courseRepository = courseRepository;
             _enrollmentRepository = enrollmentRepository;
+            _logger = logger;
         }
 
         #endregion
@@ -61,6 +63,7 @@ namespace TutorialApp.Services
                 Price = price
             };
 
+            _logger.LogInformation($"Adding item to cart: {cartItem.UserEmail} - {cartItem.CourseId}");
             return await _cartRepository.Add(cartItem);
         }
 
@@ -85,6 +88,7 @@ namespace TutorialApp.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Failed to delete item from cart.");
                 throw new CartDeleteFailedException("Failed to delete item from cart.");
             }
         }

@@ -18,11 +18,13 @@ namespace TutorialApp.Controllers
         #region Dependency Injection
         private readonly IUserService _userService;
         private readonly IAzureBlobService _azureBlobService;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(IUserService userService, IAzureBlobService azureBlobService)
+        public UserController(IUserService userService, IAzureBlobService azureBlobService, ILogger<UserController> logger)
         {
             _userService = userService;
             _azureBlobService = azureBlobService;
+            _logger = logger;
         }
 
         #endregion
@@ -45,11 +47,13 @@ namespace TutorialApp.Controllers
             }
             catch (NoSuchUserFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.NotFound, ex.Message, null);
                 return NotFound(errorResponse);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null);
                 return BadRequest(errorResponse);
             }
@@ -94,21 +98,25 @@ namespace TutorialApp.Controllers
             }
             catch (NoSuchUserFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.NotFound, ex.Message, null);
                 return NotFound(errorResponse);
             }
             catch (NoSuchUserCredentialFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.NotFound, ex.Message, null);
                 return NotFound(errorResponse);
             }
             catch (UserProfileUpdateFailedException ex)
             {
+                _logger.LogError(ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null);
                 return BadRequest(errorResponse);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null);
                 return BadRequest(errorResponse);
             }
@@ -129,6 +137,7 @@ namespace TutorialApp.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null);
                 return BadRequest(errorResponse);
             }

@@ -10,10 +10,11 @@ namespace TutorialApp.Services
 
         #region Dependency Injection
         private readonly IRepository<int, Quiz> _quizRepository;
-
-        public QuizService(IRepository<int, Quiz> quizRepository)
+        private readonly ILogger<QuizService> _logger;
+        public QuizService(IRepository<int, Quiz> quizRepository, ILogger<QuizService> logger)
         {
             _quizRepository = quizRepository;
+            _logger = logger;
         }
 
         #endregion
@@ -24,17 +25,24 @@ namespace TutorialApp.Services
         public async Task<Quiz> GetQuizByCourseIdAsync(int courseId)
         {
             var quizzes = await _quizRepository.Get();
-            if(quizzes == null)
+
+            // Check if quizzes is null or empty
+            if (quizzes == null || !quizzes.Any())
             {
-                throw new NoSuchQuizFoundException();
+                throw new NoSuchQuizFoundException("No quizzes found.");
             }
 
+            // Find the quiz by courseId
             var quiz = quizzes.FirstOrDefault(q => q.CourseId == courseId);
-            if (quiz != null)
+
+            if (quiz == null)
             {
-                // Ensure questions are loaded
-                quiz.Questions = quiz.Questions ?? new List<Question>();
+                throw new NoSuchQuizFoundException("No quiz found for the provided course ID.");
             }
+
+            // Ensure questions are loaded
+            quiz.Questions = quiz.Questions ?? new List<Question>();
+
             return quiz;
         }
 
@@ -56,6 +64,7 @@ namespace TutorialApp.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Quiz creation failed");
                 throw new QuizCreationFailedException();
             }
             
@@ -73,6 +82,7 @@ namespace TutorialApp.Services
 
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Quiz deletion failed");
                 throw new QuizDeletionFailedException();
             }
             

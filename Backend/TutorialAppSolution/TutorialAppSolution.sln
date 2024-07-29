@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TutorialApp", "TutorialApp\TutorialApp.csproj", "{EB13E9D5-7B93-40DE-9792-27DCC0186457}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TutorialApp", "TutorialApp\TutorialApp.csproj", "{EB13E9D5-7B93-40DE-9792-27DCC0186457}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TutorialAppUnitTests", "TutorialAppUnitTests\TutorialAppUnitTests.csproj", "{0E11DCA2-9727-4190-A528-D38DBDB97E4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{EB13E9D5-7B93-40DE-9792-27DCC0186457}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB13E9D5-7B93-40DE-9792-27DCC0186457}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB13E9D5-7B93-40DE-9792-27DCC0186457}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E11DCA2-9727-4190-A528-D38DBDB97E4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E11DCA2-9727-4190-A528-D38DBDB97E4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E11DCA2-9727-4190-A528-D38DBDB97E4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E11DCA2-9727-4190-A528-D38DBDB97E4A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

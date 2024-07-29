@@ -15,10 +15,11 @@ namespace TutorialApp.Controllers
     {
         #region Dependency Injection
         private readonly IQuizService _quizService;
-
-        public QuizController(IQuizService quizService)
+        private readonly ILogger<QuizController> _logger;
+        public QuizController(IQuizService quizService, ILogger<QuizController> logger)
         {
             _quizService = quizService;
+            _logger = logger;
         }
 
         #endregion
@@ -71,11 +72,13 @@ namespace TutorialApp.Controllers
             }
             catch (QuizCreationFailedException ex)
             {
+                _logger.LogError(ex, ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
                 return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
                 return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
             }
@@ -101,16 +104,19 @@ namespace TutorialApp.Controllers
             }
             catch (NoSuchQuizFoundException ex)
             {
+                _logger.LogError(ex, ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.NotFound, ex.Message, null);
                 return NotFound(errorResponse);
             }
             catch (QuizDeletionFailedException ex)
             {
+                _logger.LogError(ex, ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
                 return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
                 return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
             }

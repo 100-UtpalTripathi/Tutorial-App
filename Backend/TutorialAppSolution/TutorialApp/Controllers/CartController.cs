@@ -18,10 +18,13 @@ namespace TutorialApp.Controllers
     {
         #region Dependency Injection
         private readonly ICartService _cartService;
+        private readonly ILogger<CartController> _logger;
 
-        public CartController(ICartService cartService)
+
+        public CartController(ICartService cartService, ILogger<CartController> logger)
         {
             _cartService = cartService;
+            _logger = logger;   
         }
 
         #endregion
@@ -39,16 +42,19 @@ namespace TutorialApp.Controllers
             }
             catch (DuplicateItemAddingException ex)
             {
+                _logger.LogError(ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null);
                 return BadRequest(errorResponse);
             }
             catch (NoSuchCourseFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null);
                 return BadRequest(errorResponse);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
                 return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
             }
@@ -56,7 +62,7 @@ namespace TutorialApp.Controllers
 
         #endregion
 
-        #region Remove From Cart
+       #region Remove From Cart
         [HttpDelete("delete")]
         public async Task<IActionResult> RemoveFromCart([FromBody] CartDTO cartDTO)
         {
@@ -68,16 +74,19 @@ namespace TutorialApp.Controllers
             }
             catch (NoSuchCartFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null);
                 return BadRequest(errorResponse);
             }
             catch (CartDeleteFailedException ex)
             {
+                _logger.LogError(ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null);
                 return BadRequest(errorResponse);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
                 return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
             }
