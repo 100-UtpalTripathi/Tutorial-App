@@ -11,11 +11,13 @@ namespace TutorialApp.Services
         #region Dependency Injection
         private readonly IRepository<int, Wishlist> _wishlistRepository;
         private readonly IRepository<int, Course> _courseRepository;
+        private readonly ILogger<WishlistService> _logger;
 
-        public WishlistService(IRepository<int, Wishlist> wishlistRepository, IRepository<int, Course> courseRepository)
+        public WishlistService(IRepository<int, Wishlist> wishlistRepository, IRepository<int, Course> courseRepository, ILogger<WishlistService> logger)
         {
             _wishlistRepository = wishlistRepository;
             _courseRepository = courseRepository;
+            _logger = logger;
         }
 
         #endregion
@@ -65,6 +67,7 @@ namespace TutorialApp.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Unable to remove from wishlist.");
                 throw new UnableToRemoveFromWishlistException("Unable to remove from wishlist.");
             }
             

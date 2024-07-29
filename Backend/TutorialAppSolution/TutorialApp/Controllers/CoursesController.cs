@@ -18,10 +18,12 @@ namespace TutorialApp.Controllers
         #region Dependency Injection
         private readonly IAdminService _adminService;
         private readonly IAzureBlobService _azureBlobService;
-        public CoursesController(IAdminService adminService, IAzureBlobService azureBlobService)
+        private readonly ILogger<CoursesController> _logger;
+        public CoursesController(IAdminService adminService, IAzureBlobService azureBlobService, ILogger<CoursesController> logger)
         {
             _adminService = adminService;
             _azureBlobService = azureBlobService;
+            _logger = logger;
         }
 
         #endregion
@@ -39,6 +41,7 @@ namespace TutorialApp.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
                 return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
             }
@@ -77,11 +80,14 @@ namespace TutorialApp.Controllers
             }
             catch (CourseCreationFailedException ex)
             {
+                _logger.LogError(ex, ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null);
                 return BadRequest(errorResponse);
             }
             catch (Exception ex)
             {
+
+                _logger.LogError(ex, ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
                 return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
             }
@@ -102,16 +108,19 @@ namespace TutorialApp.Controllers
             }
             catch (NoSuchCourseFoundException)
             {
+                _logger.LogError("Course not found");
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.NotFound, "Course not found", null);
                 return NotFound(errorResponse);
             }
             catch (CourseUpdateFailedException ex)
             {
+                _logger.LogError(ex, ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null);
                 return BadRequest(errorResponse);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
                 return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
             }
@@ -132,16 +141,19 @@ namespace TutorialApp.Controllers
             }
             catch (NoSuchCourseFoundException)
             {
+                _logger.LogError("Course not found");
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.NotFound, "Course not found", null);
                 return NotFound(errorResponse);
             }
             catch (CourseDeletionFailedException ex)
             {
+                _logger.LogError(ex, ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null);
                 return BadRequest(errorResponse);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
                 return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
             }

@@ -10,11 +10,13 @@ namespace TutorialApp.Services
         #region Dependency Injection
         private readonly IRepository<int, Enrollment> _enrollmentRepository;
         private readonly IRepository<int, Course> _courseRepository;
+        private readonly ILogger<EnrollmentService> _logger;
 
-        public EnrollmentService(IRepository<int, Enrollment> enrollmentRepository, IRepository<int, Course> courseRepository)
+        public EnrollmentService(IRepository<int, Enrollment> enrollmentRepository, IRepository<int, Course> courseRepository, ILogger<EnrollmentService> logger)
         {
             _enrollmentRepository = enrollmentRepository;
             _courseRepository = courseRepository;
+            _logger = logger;
         }
 
         #endregion
@@ -37,6 +39,7 @@ namespace TutorialApp.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Enrollment failed.");
                 throw new EnrollmentFailedException("Enrollment failed.");
             }
             
@@ -74,22 +77,41 @@ namespace TutorialApp.Services
 
         public async Task<Enrollment> UpdateEnrollmentStatusAsync(EnrollmentDTO enrollmentDTO)
         {
-            var enrollments = await _enrollmentRepository.Get();
-
-            if (enrollments == null || enrollments.Count() == 0)
-                throw new NoSuchEnrollmentFoundException("No enrollments found.");
-
-            var enrollment = enrollments.FirstOrDefault(e => e.UserEmail == enrollmentDTO.UserEmail && e.CourseId == enrollmentDTO.CourseId);
-            if (enrollment != null)
+            try
             {
+                // Fetch all enrollments
+                var enrollments = await _enrollmentRepository.Get();
+
+                // Check if there are any enrollments
+                if (enrollments == null || !enrollments.Any())
+                {
+                    throw new NoSuchEnrollmentFoundException("No enrollments found.");
+                }
+
+                // Find the specific enrollment to update
+                var enrollment = enrollments.FirstOrDefault(e => e.UserEmail == enrollmentDTO.UserEmail && e.CourseId == enrollmentDTO.CourseId);
+
+                // Check if the enrollment was found
+                if (enrollment == null)
+                {
+                    throw new NoSuchEnrollmentFoundException("Enrollment not found.");
+                }
+
+                // Update enrollment status and completion date if necessary
                 enrollment.Status = enrollmentDTO.Status;
                 if (enrollmentDTO.Status == "Completed")
                 {
                     enrollment.CompletionDate = DateTime.Now;
                 }
+
+                // Update the enrollment in the repository
                 return await _enrollmentRepository.Update(enrollment);
             }
-            throw new EnrollmentFailedException("Enrollment not found.");
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Enrollment update failed.");
+                throw new EnrollmentFailedException("Enrollment update failed.");
+            }
         }
 
         #endregion

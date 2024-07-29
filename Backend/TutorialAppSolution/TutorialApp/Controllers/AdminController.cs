@@ -16,11 +16,12 @@ namespace TutorialApp.Controllers
         #region Dependency Injection
         private readonly IAdminService _adminService;
         private readonly IAuthService _authService;
-
-        public AdminController(IAdminService adminService, IAuthService authService)
+        private readonly ILogger<AdminController> _logger;
+        public AdminController(IAdminService adminService, IAuthService authService, ILogger<AdminController> logger)
         {
             _adminService = adminService;
             _authService = authService;
+            _logger = logger;
         }
         #endregion
 
@@ -41,14 +42,17 @@ namespace TutorialApp.Controllers
             }
             catch (NoSuchUserFoundException)
             {
+                _logger.LogError("User not found");
                 return NotFound(new ApiResponse<string>((int)HttpStatusCode.NotFound, "User not found", null));
             }
             catch (UnauthorizedUserException)
             {
+                _logger.LogError("Invalid Email or Password");
                 return Unauthorized(new ApiResponse<string>((int)HttpStatusCode.Unauthorized, "Invalid Email or Password", null));
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null));
             }
         }

@@ -16,13 +16,15 @@ namespace TutorialApp.Services
         private readonly IRepository<int, Course> _courseRepository;
         private readonly IRepository<int, Category> _categoryRepository;
         private readonly IRepository<string, UserCredential> _userCredentialRepository;
+        private readonly ILogger<UserService> _logger;
 
-        public UserService(IRepository<string, User> userRepository, IRepository<int, Course> courseRepository, IRepository<int, Category> categoryRepository, IRepository<string, UserCredential> userCredentialRepository)
+        public UserService(IRepository<string, User> userRepository, IRepository<int, Course> courseRepository, IRepository<int, Category> categoryRepository, IRepository<string, UserCredential> userCredentialRepository, ILogger<UserService> logger)
         {
             _userRepository = userRepository;
             _courseRepository = courseRepository;
             _categoryRepository = categoryRepository;
             _userCredentialRepository = userCredentialRepository;
+            _logger = logger;
         }
 
         #endregion
@@ -83,6 +85,7 @@ namespace TutorialApp.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error while updating user profile");
                 throw new UserProfileUpdateFailedException("Error while updating user profile");
             }
             

@@ -16,11 +16,13 @@ namespace TutorialApp.Controllers
         #region Dependency Injection
         private readonly IAuthService _authService;
         private readonly IAzureBlobService _azureBlobService;
+        private readonly ILogger<AuthController> _logger;
 
-        public AuthController(IAuthService authService, IAzureBlobService azureBlobService)
+        public AuthController(IAuthService authService, IAzureBlobService azureBlobService, ILogger<AuthController> logger)
         {
             _authService = authService;
             _azureBlobService = azureBlobService;
+            _logger = logger;
         }
 
         #endregion
@@ -61,10 +63,12 @@ namespace TutorialApp.Controllers
             }
             catch(UserRegistrationFailedException ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null));
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null));
             }
 
@@ -89,14 +93,16 @@ namespace TutorialApp.Controllers
             }
             catch (NoSuchUserFoundException)
             {
+                _logger.LogError("User not found");
                 return NotFound(new ApiResponse<string>((int)HttpStatusCode.NotFound, "User not found", null));
             }
             catch (UnauthorizedUserException)
             {
+                _logger.LogError("Invalid Email or Password");
                 return Unauthorized(new ApiResponse<string>((int)HttpStatusCode.Unauthorized, "Invalid Email or Password", null));
             }
             catch (Exception ex)
-            {
+            {_logger.LogError(ex.Message);
                 return BadRequest(new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null));
             }
         }

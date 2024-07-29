@@ -15,10 +15,12 @@ namespace TutorialApp.Controllers
     {
         #region Dependency Injection
         private readonly IEnrollmentService _enrollmentService;
+        private readonly ILogger<EnrollmentController> _logger;
 
-        public EnrollmentController(IEnrollmentService enrollmentService)
+        public EnrollmentController(IEnrollmentService enrollmentService, ILogger<EnrollmentController> logger)
         {
             _enrollmentService = enrollmentService;
+            _logger = logger;
         }
         #endregion
 
@@ -35,11 +37,13 @@ namespace TutorialApp.Controllers
             }
             catch (EnrollmentFailedException ex)
             {
+                _logger.LogError(ex, ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null);
                 return BadRequest(errorResponse);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
                 return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
             }
@@ -66,11 +70,13 @@ namespace TutorialApp.Controllers
             }
             catch (NoSuchEnrollmentFoundException ex)
             {
+                _logger.LogError(ex, ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.NotFound, ex.Message, null);
                 return NotFound(errorResponse);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
                 return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
             }
@@ -91,16 +97,19 @@ namespace TutorialApp.Controllers
             }
             catch (NoSuchEnrollmentFoundException ex)
             {
+                _logger.LogError(ex, ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.NotFound, ex.Message, null);
                 return NotFound(errorResponse);
             }
             catch (EnrollmentFailedException ex)
             {
+                _logger.LogError(ex, ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null);
                 return BadRequest(errorResponse);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
                 return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
             }

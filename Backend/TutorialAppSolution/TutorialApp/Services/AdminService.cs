@@ -10,10 +10,12 @@ namespace TutorialApp.Services
     {
         #region Dependency Injection
         private readonly IRepository<int, Course> _courseRepository;
+        private readonly ILogger<AdminService> _logger;
 
-        public AdminService(IRepository<int, Course> courseRepository)
+        public AdminService(IRepository<int, Course> courseRepository, ILogger<AdminService> logger)
         {
             _courseRepository = courseRepository;
+            _logger = logger;
         }
 
         #endregion
@@ -40,6 +42,7 @@ namespace TutorialApp.Services
 
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 throw new CourseCreationFailedException(ex.Message);
             }
             
@@ -62,7 +65,8 @@ namespace TutorialApp.Services
             }
             catch (Exception ex)
             {
-                    throw new CourseDeletionFailedException(ex.Message);
+                _logger.LogError(ex.Message);
+                throw new CourseDeletionFailedException(ex.Message);
             }
             
         }
@@ -102,6 +106,7 @@ namespace TutorialApp.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 throw new CourseUpdateFailedException(ex.Message);
             }
             

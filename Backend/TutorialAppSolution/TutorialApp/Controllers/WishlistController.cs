@@ -15,10 +15,11 @@ namespace TutorialApp.Controllers
     {
         #region Dependency Injection
         private readonly IWishlistService _wishlistService;
-
-        public WishlistController(IWishlistService wishlistService)
+        private readonly ILogger<WishlistController> _logger;
+        public WishlistController(IWishlistService wishlistService, ILogger<WishlistController> logger)
         {
             _wishlistService = wishlistService;
+            _logger = logger;
         }
         #endregion
 
@@ -40,11 +41,13 @@ namespace TutorialApp.Controllers
             }
             catch (UnableToAddToWishlistException ex)
             {
+                _logger.LogError(ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
                 return StatusCode(StatusCodes.Status500InternalServerError, errorResponse);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
                 return StatusCode(StatusCodes.Status500InternalServerError, errorResponse);
             }
@@ -70,11 +73,13 @@ namespace TutorialApp.Controllers
             }
             catch (NoSuchWishlistFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
                 return StatusCode(StatusCodes.Status500InternalServerError, errorResponse);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
                 return StatusCode(StatusCodes.Status500InternalServerError, errorResponse);
             }
@@ -100,16 +105,19 @@ namespace TutorialApp.Controllers
             }
             catch (NoSuchWishlistFoundException ex)
             {
+                _logger.LogError(ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
                 return StatusCode(StatusCodes.Status500InternalServerError, errorResponse);
             }
             catch (UnableToRemoveFromWishlistException ex)
             {
+                _logger.LogError(ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
                 return StatusCode(StatusCodes.Status500InternalServerError, errorResponse);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
                 return StatusCode(StatusCodes.Status500InternalServerError, errorResponse);
             }

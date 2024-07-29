@@ -14,12 +14,14 @@ namespace TutorialApp.Services
         private readonly IRepository<string, User> _userRepo;
         private readonly IRepository<string, UserCredential> _userCredentialRepo;
         private readonly ITokenService _tokenService;
+        private readonly ILogger<AuthService> _logger;
 
-        public AuthService(IRepository<string, User> userRepo, IRepository<string, UserCredential> userCredentialRepo, ITokenService tokenService)
+        public AuthService(IRepository<string, User> userRepo, IRepository<string, UserCredential> userCredentialRepo, ITokenService tokenService, ILogger<AuthService> logger)
         {
             _userRepo = userRepo;
             _userCredentialRepo = userCredentialRepo;
             _tokenService = tokenService;
+            _logger = logger;
         }
 
         #endregion
@@ -54,6 +56,7 @@ namespace TutorialApp.Services
                 }
             }
 
+            _logger.LogWarning("Invalid Email or Password");
             throw new UnauthorizedUserException("Invalid Email or Password");
         }
 
@@ -111,15 +114,15 @@ namespace TutorialApp.Services
             {
                 await _userCredentialRepo.DeleteByKey(userCredential.Email);
             }
-
+            _logger.LogError("Not able to register at this moment!");
             throw new UserRegistrationFailedException("Not able to register at this moment!");
         }
 
         #endregion
 
-        #region Private Methods
+        #region Helper Methods
 
-        private bool ComparePassword(byte[] encryptedPass, byte[] password)
+        public bool ComparePassword(byte[] encryptedPass, byte[] password)
         {
             if (encryptedPass.Length != password.Length)
             {
