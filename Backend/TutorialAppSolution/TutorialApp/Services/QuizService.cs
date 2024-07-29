@@ -1,4 +1,5 @@
-﻿using TutorialApp.Interfaces;
+﻿using TutorialApp.Exceptions.Quiz;
+using TutorialApp.Interfaces;
 using TutorialApp.Models;
 using TutorialApp.Models.DTOs.Quiz;
 
@@ -23,6 +24,11 @@ namespace TutorialApp.Services
         public async Task<Quiz> GetQuizByCourseIdAsync(int courseId)
         {
             var quizzes = await _quizRepository.Get();
+            if(quizzes == null)
+            {
+                throw new NoSuchQuizFoundException();
+            }
+
             var quiz = quizzes.FirstOrDefault(q => q.CourseId == courseId);
             if (quiz != null)
             {
@@ -43,7 +49,16 @@ namespace TutorialApp.Services
                 CourseId = quizDTO.CourseId,
                 Title = quizDTO.Title,
             };
-            return await _quizRepository.Add(quiz);
+
+            try
+            {
+                return await _quizRepository.Add(quiz);
+            }
+            catch (Exception ex)
+            {
+                throw new QuizCreationFailedException();
+            }
+            
         }
 
         #endregion
@@ -51,7 +66,16 @@ namespace TutorialApp.Services
         #region Delete Quiz
         public async Task<Quiz> DeleteQuizAsync(int quizId)
         {
-            return await _quizRepository.DeleteByKey(quizId);
+            try
+            {
+                return await _quizRepository.DeleteByKey(quizId);
+            }
+
+            catch (Exception ex)
+            {
+                throw new QuizDeletionFailedException();
+            }
+            
         }
 
         #endregion

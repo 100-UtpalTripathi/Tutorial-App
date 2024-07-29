@@ -32,8 +32,17 @@ namespace TutorialApp.Services
                 InstructorName = courseDTO.InstructorName
             };
 
-            var createdCourse = await _courseRepository.Add(course);
-            return createdCourse;
+            try
+            {
+                var createdCourse = await _courseRepository.Add(course);
+                return createdCourse;
+            }
+
+            catch (Exception ex)
+            {
+                throw new CourseCreationFailedException(ex.Message);
+            }
+            
         }
 
         #endregion
@@ -42,12 +51,20 @@ namespace TutorialApp.Services
 
         public async Task<Course> DeleteCourseAsync(int courseId)
         {
-            var deletedCourse = await _courseRepository.DeleteByKey(courseId);
-            if (deletedCourse == null)
+            try
             {
-                throw new NoSuchCourseFoundException();
+                var deletedCourse = await _courseRepository.DeleteByKey(courseId);
+                if (deletedCourse == null)
+                {
+                    throw new NoSuchCourseFoundException();
+                }
+                return deletedCourse;
             }
-            return deletedCourse;
+            catch (Exception ex)
+            {
+                    throw new CourseDeletionFailedException(ex.Message);
+            }
+            
         }
 
         #endregion
@@ -78,8 +95,16 @@ namespace TutorialApp.Services
             existingCourse.CourseImageUrl = courseDTO.CourseImageUrl;
             existingCourse.InstructorName = courseDTO.InstructorName;
 
-            var updatedCourse = await _courseRepository.Update(existingCourse);
-            return updatedCourse;
+            try
+            {
+                var updatedCourse = await _courseRepository.Update(existingCourse);
+                return updatedCourse;
+            }
+            catch (Exception ex)
+            {
+                throw new CourseUpdateFailedException(ex.Message);
+            }
+            
         }
 
         #endregion

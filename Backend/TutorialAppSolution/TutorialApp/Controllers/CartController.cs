@@ -1,15 +1,22 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using TutorialApp.Interfaces;
-using TutorialApp.Models.DTOs.Cart;
 using TutorialApp.Models;
+using TutorialApp.Models.DTOs;
+using TutorialApp.Models.DTOs.Cart;
+using TutorialApp.Exceptions.Cart;
+using TutorialApp.Exceptions.Course;
 
 namespace TutorialApp.Controllers
 {
+
+
     [Route("api/user/[controller]")]
     [ApiController]
     public class CartController : ControllerBase
     {
+        #region Dependency Injection
         private readonly ICartService _cartService;
 
         public CartController(ICartService cartService)
@@ -17,43 +24,90 @@ namespace TutorialApp.Controllers
             _cartService = cartService;
         }
 
+        #endregion
+
+
+        #region Add To Cart
         [HttpPost("add")]
-        public async Task<ActionResult<Cart>> AddToCart([FromBody] CartDTO cartDTO)
+        public async Task<IActionResult> AddToCart([FromBody] CartDTO cartDTO)
         {
             try
             {
                 var cartItem = await _cartService.AddToCartAsync(cartDTO);
-                return Ok(cartItem);
+                var response = new ApiResponse<Cart>((int)HttpStatusCode.OK, "Item added to cart successfully", cartItem);
+                return Ok(response);
+            }
+            catch (DuplicateItemAddingException ex)
+            {
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null);
+                return BadRequest(errorResponse);
+            }
+            catch (NoSuchCourseFoundException ex)
+            {
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null);
+                return BadRequest(errorResponse);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
+                return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
             }
         }
 
+        #endregion
+
+        #region Remove From Cart
         [HttpDelete("delete")]
-        public async Task<ActionResult<Cart>> RemoveFromCart([FromBody] CartDTO cartDTO)
+        public async Task<IActionResult> RemoveFromCart([FromBody] CartDTO cartDTO)
         {
             try
             {
                 var cartItem = await _cartService.RemoveFromCartAsync(cartDTO);
-                return Ok(cartItem);
+                var response = new ApiResponse<Cart>((int)HttpStatusCode.OK, "Item removed from cart successfully", cartItem);
+                return Ok(response);
+            }
+            catch (NoSuchCartFoundException ex)
+            {
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null);
+                return BadRequest(errorResponse);
+            }
+            catch (CartDeleteFailedException ex)
+            {
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null);
+                return BadRequest(errorResponse);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
+                return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
             }
         }
 
+        #endregion
+
+        #region Get Cart Items By User
+
         [HttpGet("get/{userEmail}")]
-        public async Task<ActionResult<IEnumerable<Course>>> GetCartItemsByUser(string userEmail)
+        public async Task<IActionResult> GetCartItemsByUser(string userEmail)
         {
-            var courses = await _cartService.GetCartItemsByUserAsync(userEmail);
-            if (courses == null || !courses.Any())
+            try
             {
-                return NotFound();
+                var courses = await _cartService.GetCartItemsByUserAsync(userEmail);
+                if (courses == null || !courses.Any())
+                {
+                    var notFoundResponse = new ApiResponse<string>((int)HttpStatusCode.NotFound, "No items found in cart", null);
+                    return NotFound(notFoundResponse);
+                }
+                var response = new ApiResponse<IEnumerable<Course>>((int)HttpStatusCode.OK, "Cart items retrieved successfully", courses);
+                return Ok(response);
             }
-            return Ok(courses);
+            catch (Exception ex)
+            {
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
+                return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
+            }
         }
+
+        #endregion
     }
 }

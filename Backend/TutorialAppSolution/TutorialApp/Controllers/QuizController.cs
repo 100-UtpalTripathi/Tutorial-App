@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using TutorialApp.Exceptions.Quiz;
 using TutorialApp.Interfaces;
 using TutorialApp.Models;
+using TutorialApp.Models.DTOs;
 using TutorialApp.Models.DTOs.Quiz;
 
 namespace TutorialApp.Controllers
@@ -10,6 +13,7 @@ namespace TutorialApp.Controllers
     [ApiController]
     public class QuizController : ControllerBase
     {
+        #region Dependency Injection
         private readonly IQuizService _quizService;
 
         public QuizController(IQuizService quizService)
@@ -17,38 +21,101 @@ namespace TutorialApp.Controllers
             _quizService = quizService;
         }
 
+        #endregion
+
+        #region Get Quiz By Course Id
+
         [HttpGet("get/{courseId}")]
-        public async Task<ActionResult<Quiz>> GetQuizByCourseId(int courseId)
+        public async Task<IActionResult> GetQuizByCourseId(int courseId)
         {
-            var quiz = await _quizService.GetQuizByCourseIdAsync(courseId);
-            if (quiz == null)
+            try
             {
-                return NotFound();
+                var quiz = await _quizService.GetQuizByCourseIdAsync(courseId);
+                if (quiz == null)
+                {
+                    var errorResponse = new ApiResponse<string>((int)HttpStatusCode.NotFound, "Quiz not found", null);
+                    return NotFound(errorResponse);
+                }
+                var response = new ApiResponse<Quiz>((int)HttpStatusCode.OK, "Quiz retrieved successfully", quiz);
+                return Ok(response);
             }
-            return Ok(quiz);
+            catch (NoSuchQuizFoundException ex)
+            {
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.NotFound, ex.Message, null);
+                return NotFound(errorResponse);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
+                return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
+            }
         }
+
+        #endregion
+
+        #region Create Quiz
 
         [HttpPost("create")]
-        public async Task<ActionResult<Quiz>> CreateQuiz([FromBody] QuizDTO quiz)
+        public async Task<IActionResult> CreateQuiz([FromBody] QuizDTO quiz)
         {
-            var createdQuiz = await _quizService.CreateQuizAsync(quiz);
-            if(createdQuiz == null)
+            try
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                var createdQuiz = await _quizService.CreateQuizAsync(quiz);
+                if (createdQuiz == null)
+                {
+                    var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, "Quiz creation failed", null);
+                    return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
+                }
+                var response = new ApiResponse<Quiz>((int)HttpStatusCode.OK, "Quiz created successfully", createdQuiz);
+                return Ok(response);
             }
-
-            return Ok(createdQuiz);
+            catch (QuizCreationFailedException ex)
+            {
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
+                return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
+                return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
+            }
         }
+
+        #endregion
+
+        #region delete quiz
 
         [HttpDelete("delete/{quizId}")]
-        public async Task<ActionResult<Quiz>> DeleteQuiz(int quizId)
+        public async Task<IActionResult> DeleteQuiz(int quizId)
         {
-            var deletedQuiz = await _quizService.DeleteQuizAsync(quizId);
-            if (deletedQuiz == null)
+            try
             {
-                return NotFound();
+                var deletedQuiz = await _quizService.DeleteQuizAsync(quizId);
+                if (deletedQuiz == null)
+                {
+                    var errorResponse = new ApiResponse<string>((int)HttpStatusCode.NotFound, "Quiz not found", null);
+                    return NotFound(errorResponse);
+                }
+                var response = new ApiResponse<Quiz>((int)HttpStatusCode.OK, "Quiz deleted successfully", deletedQuiz);
+                return Ok(response);
             }
-            return Ok(deletedQuiz);
+            catch (NoSuchQuizFoundException ex)
+            {
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.NotFound, ex.Message, null);
+                return NotFound(errorResponse);
+            }
+            catch (QuizDeletionFailedException ex)
+            {
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
+                return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
+                return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
+            }
         }
+
+        #endregion
     }
 }

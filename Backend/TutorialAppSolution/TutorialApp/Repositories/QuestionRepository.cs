@@ -27,7 +27,7 @@ namespace TutorialApp.Repositories
             var item = await GetByKey(key);
             if (item == null)
             {
-                return null;
+                throw new NoSuchQuestionFoundException();
             }
             _context.Questions.Remove(item);
             await _context.SaveChangesAsync();

@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using TutorialApp.Exceptions.Course;
 using TutorialApp.Interfaces;
-using TutorialApp.Models.DTOs.Course;
 using TutorialApp.Models;
-using TutorialApp.Models.DTOs.User;
+using TutorialApp.Models.DTOs;
+using TutorialApp.Models.DTOs.Course;
 using TutorialApp.Services;
 
 namespace TutorialApp.Controllers
@@ -13,6 +14,8 @@ namespace TutorialApp.Controllers
     [ApiController]
     public class CoursesController : ControllerBase
     {
+
+        #region Dependency Injection
         private readonly IAdminService _adminService;
         private readonly IAzureBlobService _azureBlobService;
         public CoursesController(IAdminService adminService, IAzureBlobService azureBlobService)
@@ -21,24 +24,42 @@ namespace TutorialApp.Controllers
             _azureBlobService = azureBlobService;
         }
 
+        #endregion
+
+        #region Get All Courses
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Course>>> GetAllCourses()
+        public async Task<IActionResult> GetAllCourses()
         {
-            var courses = await _adminService.GetAllCoursesAsync();
-            return Ok(courses);
+            try
+            {
+                var courses = await _adminService.GetAllCoursesAsync();
+                var response = new ApiResponse<IEnumerable<Course>>((int)HttpStatusCode.OK, "Courses retrieved successfully", courses);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
+                return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
+            }
         }
 
+        #endregion
+
+        #region Create Course
+
         [HttpPost("create")]
-        public async Task<ActionResult<Course>> CreateCourse([FromBody] CourseDTO courseDTO)
+        public async Task<IActionResult> CreateCourse([FromBody] CourseDTO courseDTO)
         {
             if (courseDTO.Image != null)
             {
                 var fileStream = courseDTO.Image.OpenReadStream();
-                var result = await _azureBlobService.UploadFileAsync("tutorialapp", "CourseImages", courseDTO.CategoryId + courseDTO.InstructorName + courseDTO.Image.FileName,
-                fileStream);
+                var result = await _azureBlobService.UploadFileAsync("tutorialapp", "CourseImages", courseDTO.CategoryId + courseDTO.InstructorName + courseDTO.Image.FileName, fileStream);
+
                 if (result.IsError)
                 {
-                    return BadRequest(result);
+                    var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, "Image Upload Failed!", null);
+                    return BadRequest(errorResponse);
                 }
 
                 courseDTO.CourseImageUrl = result.FileUri.ToString();
@@ -48,37 +69,84 @@ namespace TutorialApp.Controllers
                 courseDTO.CourseImageUrl = null;
             }
 
-            var response = await _adminService.CreateCourseAsync(courseDTO);
-            return Ok(response);
+            try
+            {
+                var response = await _adminService.CreateCourseAsync(courseDTO);
+                var successResponse = new ApiResponse<Course>((int)HttpStatusCode.OK, "Course created successfully", response);
+                return Ok(successResponse);
+            }
+            catch (CourseCreationFailedException ex)
+            {
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null);
+                return BadRequest(errorResponse);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
+                return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
+            }
         }
 
+        #endregion
+
+        #region Update Course
+
         [HttpPut("update/{id}")]
-        public async Task<ActionResult<Course>> UpdateCourse(int id, [FromBody] CourseDTO courseDTO)
+        public async Task<IActionResult> UpdateCourse(int id, [FromBody] CourseDTO courseDTO)
         {
-            
             try
             {
                 var updatedCourse = await _adminService.UpdateCourseAsync(id, courseDTO);
-                return Ok(updatedCourse);
+                var response = new ApiResponse<Course>((int)HttpStatusCode.OK, "Course updated successfully", updatedCourse);
+                return Ok(response);
             }
             catch (NoSuchCourseFoundException)
             {
-                return NotFound();
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.NotFound, "Course not found", null);
+                return NotFound(errorResponse);
+            }
+            catch (CourseUpdateFailedException ex)
+            {
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null);
+                return BadRequest(errorResponse);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
+                return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
             }
         }
 
+        #endregion
+
+        #region Delete Course
+
         [HttpDelete("delete/{id}")]
-        public async Task<ActionResult<Course>> DeleteCourse(int id)
+        public async Task<IActionResult> DeleteCourse(int id)
         {
             try
             {
                 var deletedCourse = await _adminService.DeleteCourseAsync(id);
-                return Ok(deletedCourse);
+                var response = new ApiResponse<Course>((int)HttpStatusCode.OK, "Course deleted successfully", deletedCourse);
+                return Ok(response);
             }
             catch (NoSuchCourseFoundException)
             {
-                return NotFound();
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.NotFound, "Course not found", null);
+                return NotFound(errorResponse);
+            }
+            catch (CourseDeletionFailedException ex)
+            {
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null);
+                return BadRequest(errorResponse);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
+                return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
             }
         }
+
+        #endregion
     }
 }

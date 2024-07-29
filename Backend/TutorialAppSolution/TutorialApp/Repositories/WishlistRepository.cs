@@ -27,7 +27,7 @@ namespace TutorialApp.Repositories
             var item = await GetByKey(key);
             if (item == null)
             {
-                return null;
+                throw new NoSuchWishlistFoundException();
             }
             _context.Wishlists.Remove(item);
             await _context.SaveChangesAsync();

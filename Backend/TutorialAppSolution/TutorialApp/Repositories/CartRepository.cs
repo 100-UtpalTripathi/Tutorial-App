@@ -26,8 +26,8 @@ namespace TutorialApp.Repositories
         {
             var item = await GetByKey(key);
             if (item == null)
-            {
-                return null;
+            { 
+                throw new NoSuchCartFoundException();
             }
             _context.Carts.Remove(item);
             await _context.SaveChangesAsync();

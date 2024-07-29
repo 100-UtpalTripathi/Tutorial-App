@@ -1,6 +1,7 @@
 ﻿using TutorialApp.Interfaces;
 using TutorialApp.Models.DTOs.Enrollment;
 using TutorialApp.Models;
+using TutorialApp.Exceptions.Enrollment;
 
 namespace TutorialApp.Services
 {
@@ -29,7 +30,16 @@ namespace TutorialApp.Services
                 Status = "Registered",
                 EnrollmentDate = DateTime.Now
             };
-            return await _enrollmentRepository.Add(enrollment);
+
+            try
+            {
+                return await _enrollmentRepository.Add(enrollment);
+            }
+            catch (Exception ex)
+            {
+                throw new EnrollmentFailedException("Enrollment failed.");
+            }
+            
         }
 
         #endregion
@@ -39,6 +49,10 @@ namespace TutorialApp.Services
         public async Task<IEnumerable<Course>> GetEnrolledCoursesByUserAsync(string userEmail)
         {
             var enrollments = await _enrollmentRepository.Get();
+
+            if (enrollments == null || enrollments.Count() == 0)
+                throw new NoSuchEnrollmentFoundException("No enrollments found.");
+
             var userEnrollments = enrollments.Where(e => e.UserEmail == userEmail);
             var courses = new List<Course>();
 
@@ -61,6 +75,10 @@ namespace TutorialApp.Services
         public async Task<Enrollment> UpdateEnrollmentStatusAsync(EnrollmentDTO enrollmentDTO)
         {
             var enrollments = await _enrollmentRepository.Get();
+
+            if (enrollments == null || enrollments.Count() == 0)
+                throw new NoSuchEnrollmentFoundException("No enrollments found.");
+
             var enrollment = enrollments.FirstOrDefault(e => e.UserEmail == enrollmentDTO.UserEmail && e.CourseId == enrollmentDTO.CourseId);
             if (enrollment != null)
             {
@@ -71,7 +89,7 @@ namespace TutorialApp.Services
                 }
                 return await _enrollmentRepository.Update(enrollment);
             }
-            throw new Exception("Enrollment not found.");
+            throw new EnrollmentFailedException("Enrollment not found.");
         }
 
         #endregion
