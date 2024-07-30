@@ -1,92 +1,88 @@
 /* General Navbar Styles */
 .navbar {
-  background-color: #343a40;
+  background-color: #343a40; /* Dark background for navbar */
+  padding: 0.5rem 1rem; /* Adjust padding to prevent overflow */
 }
 
 /* Navbar Brand */
 .navbar-brand {
-  font-size: 1.5rem;
-  font-weight: bold;
+  font-size: 1.5rem; /* Font size for brand text */
+  font-weight: bold; /* Bold text for brand */
+  margin-left: 30px; /* Space from the left edge */
 }
 
 /* Navbar Links */
 .nav-link {
-  font-size: 1rem;
-  margin-right: 1rem;
+  font-size: 1rem; /* Font size for navbar links */
+  margin-left: 1rem; /* Space between links */
 }
 
 /* Dropdown Menu */
 .nav-item.dropdown:hover .dropdown-menu {
-  display: block;
+  display: block; /* Show dropdown on hover */
 }
 
 /* Hide Dropdown Menu by Default */
 .dropdown-menu {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 1000;
-  margin: 0;
-  padding: 0.5rem 0;
-  background-color: #343a40;
-  border: 1px solid rgba(0, 0, 0, 0.125);
-  border-radius: 0.25rem;
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  display: none; /* Initially hidden */
+  position: absolute; /* Positioned relative to the navbar */
+  top: 100%; /* Align to the bottom of the navbar */
+  left: 0; /* Align to the left edge of the navbar */
+  z-index: 1000; /* Ensure dropdown is above other content */
+  margin: 0; /* Remove default margin */
+  padding: 0.5rem 0; /* Padding inside dropdown */
+  background-color: #343a40; /* Dark background for dropdown */
+  border: 1px solid rgba(0, 0, 0, 0.125); /* Border around dropdown */
+  border-radius: 0.25rem; /* Rounded corners */
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); /* Subtle shadow */
 }
 
 /* Dropdown Items */
 .dropdown-item {
-  color: #fff;
-  padding: 0.5rem 1rem;
+  color: #fff; /* White text color */
+  padding: 0.5rem 1rem; /* Padding for each item */
 }
 
 .dropdown-item:hover {
-  background-color: #495057;
+  background-color: #495057; /* Darker background on hover */
 }
 
 /* Navbar Icons */
 .nav-link i {
-  font-size: 1.25rem;
-  font-weight: 900;
+  font-size: 1.25rem; /* Larger font size for icons */
+  font-weight: 900; /* Bold icons */
 }
 
 /* Navbar Search */
+.form-inline {
+  display: flex;
+  align-items: center; /* Align items vertically in the center */
+}
+
 .form-control {
-  border-radius: 0.25rem;
+  border-radius: 0.25rem; /* Rounded corners for the search input */
+  flex: 1; /* Allow search input to take available space */
 }
 
-.btn-outline-success {
-  border-color: #28a745;
-  color: #28a745;
-}
-
-.btn-outline-success:hover {
-  background-color: #28a745;
-  color: #fff;
-}
-
-/* Search Suggestions Styles */
 .search-suggestions {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 0.25rem;
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-  z-index: 1000;
+  position: absolute; /* Positioned relative to the search input */
+  top: 100%; /* Align to the bottom of the search input */
+  left: 0; /* Align to the left edge of the container */
+  right: 0; /* Expand to the right edge of the container */
+  background-color: #fff; /* White background for suggestions */
+  border: 1px solid #ddd; /* Light border around suggestions */
+  border-radius: 0.25rem; /* Rounded corners */
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); /* Subtle shadow */
+  z-index: 1000; /* Ensure suggestions are above other content */
 }
 
 .suggestion-item {
-  display: block;
-  padding: 0.5rem 1rem;
-  color: #000;
-  text-decoration: none;
+  display: block; /* Block display for each suggestion */
+  padding: 0.5rem 1rem; /* Padding inside each item */
+  color: #000; /* Black text color */
+  text-decoration: none; /* Remove underline from links */
 }
 
 .suggestion-item:hover {
-  background-color: #f8f9fa;
+  background-color: #f8f9fa; /* Light background on hover */
 }
-
