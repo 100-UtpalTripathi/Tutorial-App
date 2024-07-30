@@ -1,0 +1,92 @@
+/* General Navbar Styles */
+.navbar {
+  background-color: #343a40;
+}
+
+/* Navbar Brand */
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Navbar Links */
+.nav-link {
+  font-size: 1rem;
+  margin-right: 1rem;
+}
+
+/* Dropdown Menu */
+.nav-item.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+/* Hide Dropdown Menu by Default */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  margin: 0;
+  padding: 0.5rem 0;
+  background-color: #343a40;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+/* Dropdown Items */
+.dropdown-item {
+  color: #fff;
+  padding: 0.5rem 1rem;
+}
+
+.dropdown-item:hover {
+  background-color: #495057;
+}
+
+/* Navbar Icons */
+.nav-link i {
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+
+/* Navbar Search */
+.form-control {
+  border-radius: 0.25rem;
+}
+
+.btn-outline-success {
+  border-color: #28a745;
+  color: #28a745;
+}
+
+.btn-outline-success:hover {
+  background-color: #28a745;
+  color: #fff;
+}
+
+/* Search Suggestions Styles */
+.search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 0.25rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  z-index: 1000;
+}
+
+.suggestion-item {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: #000;
+  text-decoration: none;
+}
+
+.suggestion-item:hover {
+  background-color: #f8f9fa;
+}
+
