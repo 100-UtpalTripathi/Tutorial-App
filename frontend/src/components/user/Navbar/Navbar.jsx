@@ -1,28 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
-
-// Dummy function to simulate fetching courses based on query
-const fetchCourses = async (query) => {
-  // Replace with your actual API call
-  const response = await fetch(`/api/courses?search=${query}`);
-  const data = await response.json();
-  return data;
-};
+import useFetch from '../../../hooks/useFetch';
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    if (searchQuery) {
-      fetchCourses(searchQuery).then(data => {
-        setSuggestions(data);
-      });
-    } else {
+    const token = localStorage.getItem('token');
+    setIsAuthenticated(!!token);
+  }, []);
+
+  // Fetch courses based on search query using useFetch
+  const { data, error } = useFetch(`/api/courses?search=${searchQuery}`, [searchQuery]);
+
+  useEffect(() => {
+    if (data) {
+      setSuggestions(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (error) {
+      console.error('Error fetching courses:', error);
       setSuggestions([]);
     }
-  }, [searchQuery]);
+  }, [error]);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -79,9 +84,20 @@ const Navbar = () => {
           <li className="nav-item">
             <Link className="nav-link" to="/cart"><i className="bi bi-cart"></i></Link>
           </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/profile">Profile</Link>
-          </li>
+          {isAuthenticated ? (
+            <li className="nav-item">
+              <Link className="nav-link" to="/profile">Profile</Link>
+            </li>
+          ) : (
+            <>
+              <li className="nav-item">
+                <Link className="nav-link" to="/login">Login</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/signup">Register</Link>
+              </li>
+            </>
+          )}
         </ul>
       </div>
     </nav>
