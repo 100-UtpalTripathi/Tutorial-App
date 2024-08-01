@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using TutorialApp.Exceptions.Quiz;
@@ -11,6 +12,7 @@ namespace TutorialApp.Controllers
 {
     [Route("api/course/[controller]")]
     [ApiController]
+    [EnableCors("AllowAll")]
     public class QuizController : ControllerBase
     {
         #region Dependency Injection

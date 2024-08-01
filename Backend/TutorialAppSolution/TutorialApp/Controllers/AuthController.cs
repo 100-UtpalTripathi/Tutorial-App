@@ -5,11 +5,13 @@ using TutorialApp.Models.DTOs.User;
 using TutorialApp.Models.DTOs;
 using System.Net;
 using TutorialApp.Exceptions.User;
+using Microsoft.AspNetCore.Cors;
 
 namespace TutorialApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("AllowAll")]
     public class AuthController : ControllerBase
     {
 
@@ -30,7 +32,7 @@ namespace TutorialApp.Controllers
         #region Register
 
         [HttpPost("user/register")]
-        public async Task<IActionResult> RegisterAsync([FromBody] UserRegisterDTO userRegisterDTO)
+        public async Task<IActionResult> RegisterAsync([FromForm] UserRegisterDTO userRegisterDTO)
         {
             if (userRegisterDTO.Image != null)
             {

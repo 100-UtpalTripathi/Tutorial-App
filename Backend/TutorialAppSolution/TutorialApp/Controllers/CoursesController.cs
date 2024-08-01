@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using TutorialApp.Exceptions.Course;
@@ -12,6 +13,7 @@ namespace TutorialApp.Controllers
 {
     [Route("api/admin/[controller]")]
     [ApiController]
+    [EnableCors("AllowAll")]
     public class CoursesController : ControllerBase
     {
 
@@ -52,12 +54,12 @@ namespace TutorialApp.Controllers
         #region Create Course
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateCourse([FromBody] CourseDTO courseDTO)
+        public async Task<IActionResult> CreateCourse([FromForm] CourseDTO courseDTO)
         {
             if (courseDTO.Image != null)
             {
                 var fileStream = courseDTO.Image.OpenReadStream();
-                var result = await _azureBlobService.UploadFileAsync("tutorialapp", "CourseImages", courseDTO.CategoryId + courseDTO.InstructorName + courseDTO.Image.FileName, fileStream);
+                var result = await _azureBlobService.UploadFileAsync("tutorialapp", "CourseImages", courseDTO.CategoryName + courseDTO.InstructorName + courseDTO.Image.FileName, fileStream);
 
                 if (result.IsError)
                 {
@@ -98,8 +100,25 @@ namespace TutorialApp.Controllers
         #region Update Course
 
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> UpdateCourse(int id, [FromBody] CourseDTO courseDTO)
+        public async Task<IActionResult> UpdateCourse(int id, [FromForm] CourseDTO courseDTO)
         {
+            if (courseDTO.Image != null)
+            {
+                var fileStream = courseDTO.Image.OpenReadStream();
+                var result = await _azureBlobService.UploadFileAsync("tutorialapp", "CourseImages", courseDTO.CategoryName + courseDTO.InstructorName + courseDTO.Image.FileName, fileStream);
+
+                if (result.IsError)
+                {
+                    var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, "Image Upload Failed!", null);
+                    return BadRequest(errorResponse);
+                }
+
+                courseDTO.CourseImageUrl = result.FileUri.ToString();
+            }
+            else
+            {
+                courseDTO.CourseImageUrl = null;
+            }
             try
             {
                 var updatedCourse = await _adminService.UpdateCourseAsync(id, courseDTO);

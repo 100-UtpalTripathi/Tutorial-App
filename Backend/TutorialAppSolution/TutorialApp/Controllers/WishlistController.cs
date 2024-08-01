@@ -6,11 +6,14 @@ using TutorialApp.Models.DTOs.Wishlist;
 using TutorialApp.Models;
 using TutorialApp.Exceptions.Wishlist;
 using System.Net;
+using Microsoft.AspNetCore.Cors;
 
 namespace TutorialApp.Controllers
 {
     [Route("api/user/course/[controller]")]
     [ApiController]
+    [EnableCors("AllowAll")]
+    
     public class WishlistController : ControllerBase
     {
         #region Dependency Injection

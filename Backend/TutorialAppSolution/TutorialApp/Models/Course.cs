@@ -8,6 +8,8 @@ namespace TutorialApp.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public int CategoryId { get; set; }
+
+        public string CategoryName { get; set; }
         public decimal Price { get; set; }
 
         public string CourseImageUrl { get; set; }
@@ -15,7 +17,8 @@ namespace TutorialApp.Models
         public Category Category { get; set; }
 
         public String InstructorName { get; set; }
-        public ICollection<Module> Modules { get; set; }
+
+        public string CourseURL { get; set; }
         public ICollection<Enrollment> Enrollments { get; set; }
         public ICollection<Wishlist> Wishlists { get; set; }
         public ICollection<Cart> Carts { get; set; }

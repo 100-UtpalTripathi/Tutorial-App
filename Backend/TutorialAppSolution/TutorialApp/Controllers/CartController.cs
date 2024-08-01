@@ -7,13 +7,13 @@ using TutorialApp.Models.DTOs;
 using TutorialApp.Models.DTOs.Cart;
 using TutorialApp.Exceptions.Cart;
 using TutorialApp.Exceptions.Course;
+using Microsoft.AspNetCore.Cors;
 
 namespace TutorialApp.Controllers
 {
-
-
     [Route("api/user/[controller]")]
     [ApiController]
+    [EnableCors("AllowAll")]
     public class CartController : ControllerBase
     {
         #region Dependency Injection

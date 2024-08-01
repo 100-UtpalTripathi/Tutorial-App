@@ -8,11 +8,13 @@ using TutorialApp.Services;
 using TutorialApp.Exceptions.User;
 using TutorialApp.Exceptions.UserCredential;
 using System.Net;
+using Microsoft.AspNetCore.Cors;
 
 namespace TutorialApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("AllowAll")]
     public class UserController : ControllerBase
     {
         #region Dependency Injection
