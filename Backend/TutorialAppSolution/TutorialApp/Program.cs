@@ -99,7 +99,7 @@ namespace Tutorial_App
             #endregion
 
             #region Repositories
-            builder.Services.AddScoped<IRepository<int, Module>, ModuleRepository>();
+            
             builder.Services.AddScoped<IRepository<int, Question>, QuestionRepository>();
             builder.Services.AddScoped<IRepository<int, Quiz>, QuizRepository>();
             builder.Services.AddScoped<IRepository<int, Wishlist>, WishlistRepository>();

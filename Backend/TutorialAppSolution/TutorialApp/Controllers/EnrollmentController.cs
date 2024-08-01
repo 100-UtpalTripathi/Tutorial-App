@@ -6,11 +6,14 @@ using TutorialApp.Models.DTOs;
 using TutorialApp.Models.DTOs.Enrollment;
 using TutorialApp.Exceptions.Enrollment;
 using System.Net;
+using Microsoft.AspNetCore.Cors;
 
 namespace TutorialApp.Controllers
 {
     [Route("api/user/course/[controller]")]
     [ApiController]
+    [EnableCors("AllowAll")]
+
     public class EnrollmentController : ControllerBase
     {
         #region Dependency Injection

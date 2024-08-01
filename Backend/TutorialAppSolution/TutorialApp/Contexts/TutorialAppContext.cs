@@ -9,7 +9,7 @@ namespace TutorialApp.Contexts
         {
         }
         public DbSet<Course> Courses { get; set; }
-        public DbSet<Module> Modules { get; set; }
+        
         public DbSet<Enrollment> Enrollments { get; set; }
         public DbSet<Quiz> Quizzes { get; set; }
         public DbSet<Question> Questions { get; set; }
@@ -32,10 +32,7 @@ namespace TutorialApp.Contexts
                 .WithMany(c => c.Enrollments)
                 .HasForeignKey(e => e.CourseId);
 
-            modelBuilder.Entity<Module>()
-                .HasOne(m => m.Course)
-                .WithMany(c => c.Modules)
-                .HasForeignKey(m => m.CourseId);
+            
 
             modelBuilder.Entity<Quiz>()
                 .HasOne(q => q.Course)

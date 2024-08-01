@@ -4,12 +4,13 @@ using TutorialApp.Exceptions.User;
 using TutorialApp.Interfaces;
 using TutorialApp.Models.DTOs.User;
 using System.Net;
+using Microsoft.AspNetCore.Cors;
 
 namespace TutorialApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
+    [EnableCors("AllowAll")]    
    
     public class AdminController : ControllerBase
     {

@@ -1,9 +1,11 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using TutorialApp.Exceptions.Course;
 using TutorialApp.Interfaces;
@@ -17,6 +19,7 @@ namespace TutorialAppUnitTests.ServiceTests
     public class AdminServiceTests
     {
         private Mock<IRepository<int, Course>> _mockCourseRepository;
+        private Mock<IRepository<int, Category>> _mockCategoryRepository;
         private Mock<ILogger<AdminService>> _mockLogger;
         private AdminService _adminService;
 
@@ -24,8 +27,10 @@ namespace TutorialAppUnitTests.ServiceTests
         public void Setup()
         {
             _mockCourseRepository = new Mock<IRepository<int, Course>>();
+            _mockCategoryRepository = new Mock<IRepository<int, Category>>();
+
             _mockLogger = new Mock<ILogger<AdminService>>();
-            _adminService = new AdminService(_mockCourseRepository.Object, _mockLogger.Object);
+            _adminService = new AdminService(_mockCourseRepository.Object, _mockLogger.Object, _mockCategoryRepository.Object);
         }
 
         [Test]
@@ -36,7 +41,7 @@ namespace TutorialAppUnitTests.ServiceTests
             {
                 Title = "Course Title",
                 Description = "Course Description",
-                CategoryId = 1,
+                CategoryName = "Web Development",
                 Price = 100m,
                 CourseImageUrl = "http://example.com/image.jpg",
                 InstructorName = "Instructor Name"
@@ -46,7 +51,7 @@ namespace TutorialAppUnitTests.ServiceTests
             {
                 Title = courseDTO.Title,
                 Description = courseDTO.Description,
-                CategoryId = courseDTO.CategoryId,
+                CategoryName = courseDTO.CategoryName,
                 Price = courseDTO.Price,
                 CourseImageUrl = courseDTO.CourseImageUrl,
                 InstructorName = courseDTO.InstructorName
@@ -71,7 +76,7 @@ namespace TutorialAppUnitTests.ServiceTests
             {
                 Title = "Course Title",
                 Description = "Course Description",
-                CategoryId = 1,
+                CategoryName = "Web Development",
                 Price = 100m,
                 CourseImageUrl = "http://example.com/image.jpg",
                 InstructorName = "Instructor Name"
@@ -165,7 +170,7 @@ namespace TutorialAppUnitTests.ServiceTests
             {
                 Title = "Updated Title",
                 Description = "Updated Description",
-                CategoryId = 2,
+                CategoryName = "Web Development",
                 Price = 150m,
                 CourseImageUrl = "http://example.com/newimage.jpg",
                 InstructorName = "New Instructor"
@@ -177,7 +182,7 @@ namespace TutorialAppUnitTests.ServiceTests
                 CourseId = courseId,
                 Title = courseDTO.Title,
                 Description = courseDTO.Description,
-                CategoryId = courseDTO.CategoryId,
+                CategoryName = courseDTO.CategoryName,
                 Price = courseDTO.Price,
                 CourseImageUrl = courseDTO.CourseImageUrl,
                 InstructorName = courseDTO.InstructorName
@@ -204,7 +209,7 @@ namespace TutorialAppUnitTests.ServiceTests
             {
                 Title = "Updated Title",
                 Description = "Updated Description",
-                CategoryId = 2,
+                CategoryName = "Web Development",
                 Price = 150m,
                 CourseImageUrl = "http://example.com/newimage.jpg",
                 InstructorName = "New Instructor"
@@ -225,7 +230,7 @@ namespace TutorialAppUnitTests.ServiceTests
             {
                 Title = "Updated Title",
                 Description = "Updated Description",
-                CategoryId = 2,
+                CategoryName = "Web Development",
                 Price = 150m,
                 CourseImageUrl = "http://example.com/newimage.jpg",
                 InstructorName = "New Instructor"
