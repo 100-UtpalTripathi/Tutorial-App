@@ -103,7 +103,7 @@ namespace TutorialApp.Services
             var existingCategory = existingCategories.FirstOrDefault(c => c.Name == category);
 
             var courses = await _courseRepository.Get();
-            return courses.Where(c => c.CategoryId == existingCategory.CategoryId);
+            return courses.Where(c => c.CategoryName == category);
         }
 
         #endregion

@@ -8,6 +8,7 @@ using TutorialApp.Models.DTOs.Cart;
 using TutorialApp.Exceptions.Cart;
 using TutorialApp.Exceptions.Course;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TutorialApp.Controllers
 {
@@ -29,7 +30,7 @@ namespace TutorialApp.Controllers
 
         #endregion
 
-
+       
         #region Add To Cart
         [HttpPost("add")]
         public async Task<IActionResult> AddToCart([FromBody] CartDTO cartDTO)

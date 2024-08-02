@@ -39,10 +39,11 @@ namespace TutorialAppUnitTests.RepositoryTests
                 {
                     Title = "Test Course",
                     Description = "Test Description",
-                    CategoryId = 1,
+                    CategoryName = "Web Development",
                     Price = 100,
                     CourseImageUrl = "http://example.com/image.jpg",
-                    InstructorName = "John Doe"
+                    InstructorName = "John Doe",
+                    CourseURL = "http://example.com/course"
                 };
 
                 // Act
@@ -65,10 +66,11 @@ namespace TutorialAppUnitTests.RepositoryTests
                 {
                     Title = "Test Course",
                     Description = "Test Description",
-                    CategoryId = 1,
+                    CategoryName= "Web Development",
                     Price = 100,
                     CourseImageUrl = "http://example.com/image.jpg",
-                    InstructorName = "John Doe"
+                    InstructorName = "John Doe",
+                    CourseURL = "http://example.com/course"
                 };
 
                 var addedCourse = await repository.Add(course);
@@ -107,10 +109,11 @@ namespace TutorialAppUnitTests.RepositoryTests
                 {
                     Title = "Test Course",
                     Description = "Test Description",
-                    CategoryId = 1,
+                    CategoryName = "Web Development",
                     Price = 100,
                     CourseImageUrl = "http://example.com/image.jpg",
-                    InstructorName = "John Doe"
+                    InstructorName = "John Doe",
+                    CourseURL = "http://example.com/course"
                 };
 
                 var addedCourse = await repository.Add(course);
@@ -151,19 +154,21 @@ namespace TutorialAppUnitTests.RepositoryTests
                 {
                     Title = "Test Course 1",
                     Description = "Test Description 1",
-                    CategoryId = 1,
+                    CategoryName = "Web Development",
                     Price = 100,
                     CourseImageUrl = "http://example.com/image1.jpg",
-                    InstructorName = "John Doe 1"
+                    InstructorName = "John Doe 1",
+                    CourseURL = "http://example.com/course1"
                 };
                 var course2 = new Course
                 {
                     Title = "Test Course 2",
                     Description = "Test Description 2",
-                    CategoryId = 2,
+                    CategoryName = "Web Development",
                     Price = 200,
                     CourseImageUrl = "http://example.com/image2.jpg",
-                    InstructorName = "John Doe 2"
+                    InstructorName = "John Doe 2",
+                    CourseURL = "http://example.com/course2"
                 };
 
                 await repository.Add(course1);
@@ -189,10 +194,11 @@ namespace TutorialAppUnitTests.RepositoryTests
                 {
                     Title = "Original Course",
                     Description = "Original Description",
-                    CategoryId = 1,
+                    CategoryName = "Web Development",
                     Price = 100,
                     CourseImageUrl = "http://example.com/image.jpg",
-                    InstructorName = "John Doe"
+                    InstructorName = "John Doe",
+                    CourseURL = "http://example.com/course"
                 };
 
                 var addedCourse = await repository.Add(course);

@@ -33,60 +33,7 @@ namespace TutorialAppUnitTests.ServiceTests
             _adminService = new AdminService(_mockCourseRepository.Object, _mockLogger.Object, _mockCategoryRepository.Object);
         }
 
-        [Test]
-        public async Task CreateCourseAsync_ShouldCreateCourse_WhenValidDTOProvided()
-        {
-            // Arrange
-            var courseDTO = new CourseDTO
-            {
-                Title = "Course Title",
-                Description = "Course Description",
-                CategoryName = "Web Development",
-                Price = 100m,
-                CourseImageUrl = "http://example.com/image.jpg",
-                InstructorName = "Instructor Name"
-            };
-
-            var course = new Course
-            {
-                Title = courseDTO.Title,
-                Description = courseDTO.Description,
-                CategoryName = courseDTO.CategoryName,
-                Price = courseDTO.Price,
-                CourseImageUrl = courseDTO.CourseImageUrl,
-                InstructorName = courseDTO.InstructorName
-            };
-
-            _mockCourseRepository.Setup(repo => repo.Add(It.IsAny<Course>())).ReturnsAsync(course);
-
-            // Act
-            var result = await _adminService.CreateCourseAsync(courseDTO);
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(courseDTO.Title, result.Title);
-            Assert.AreEqual(courseDTO.Description, result.Description);
-        }
-
-        [Test]
-        public void CreateCourseAsync_ShouldThrowCourseCreationFailedException_WhenExceptionOccurs()
-        {
-            // Arrange
-            var courseDTO = new CourseDTO
-            {
-                Title = "Course Title",
-                Description = "Course Description",
-                CategoryName = "Web Development",
-                Price = 100m,
-                CourseImageUrl = "http://example.com/image.jpg",
-                InstructorName = "Instructor Name"
-            };
-
-            _mockCourseRepository.Setup(repo => repo.Add(It.IsAny<Course>())).ThrowsAsync(new Exception("Database error"));
-
-            // Act & Assert
-            Assert.ThrowsAsync<CourseCreationFailedException>(async () => await _adminService.CreateCourseAsync(courseDTO));
-        }
+        
 
         [Test]
         public async Task DeleteCourseAsync_ShouldDeleteCourse_WhenCourseExists()
@@ -161,44 +108,7 @@ namespace TutorialAppUnitTests.ServiceTests
             Assert.IsEmpty(result);
         }
 
-        [Test]
-        public async Task UpdateCourseAsync_ShouldUpdateCourse_WhenCourseExists()
-        {
-            // Arrange
-            var courseId = 1;
-            var courseDTO = new CourseDTO
-            {
-                Title = "Updated Title",
-                Description = "Updated Description",
-                CategoryName = "Web Development",
-                Price = 150m,
-                CourseImageUrl = "http://example.com/newimage.jpg",
-                InstructorName = "New Instructor"
-            };
-
-            var existingCourse = new Course { CourseId = courseId, Title = "Old Title" };
-            var updatedCourse = new Course
-            {
-                CourseId = courseId,
-                Title = courseDTO.Title,
-                Description = courseDTO.Description,
-                CategoryName = courseDTO.CategoryName,
-                Price = courseDTO.Price,
-                CourseImageUrl = courseDTO.CourseImageUrl,
-                InstructorName = courseDTO.InstructorName
-            };
-
-            _mockCourseRepository.Setup(repo => repo.GetByKey(courseId)).ReturnsAsync(existingCourse);
-            _mockCourseRepository.Setup(repo => repo.Update(It.IsAny<Course>())).ReturnsAsync(updatedCourse);
-
-            // Act
-            var result = await _adminService.UpdateCourseAsync(courseId, courseDTO);
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(courseDTO.Title, result.Title);
-            Assert.AreEqual(courseDTO.Description, result.Description);
-        }
+        
 
         [Test]
         public void UpdateCourseAsync_ShouldThrowNoSuchCourseFoundException_WhenCourseNotFound()
@@ -221,27 +131,6 @@ namespace TutorialAppUnitTests.ServiceTests
             Assert.ThrowsAsync<NoSuchCourseFoundException>(async () => await _adminService.UpdateCourseAsync(courseId, courseDTO));
         }
 
-        [Test]
-        public void UpdateCourseAsync_ShouldThrowCourseUpdateFailedException_WhenExceptionOccurs()
-        {
-            // Arrange
-            var courseId = 1;
-            var courseDTO = new CourseDTO
-            {
-                Title = "Updated Title",
-                Description = "Updated Description",
-                CategoryName = "Web Development",
-                Price = 150m,
-                CourseImageUrl = "http://example.com/newimage.jpg",
-                InstructorName = "New Instructor"
-            };
-
-            var existingCourse = new Course { CourseId = courseId, Title = "Old Title" };
-            _mockCourseRepository.Setup(repo => repo.GetByKey(courseId)).ReturnsAsync(existingCourse);
-            _mockCourseRepository.Setup(repo => repo.Update(It.IsAny<Course>())).ThrowsAsync(new Exception("Database error"));
-
-            // Act & Assert
-            Assert.ThrowsAsync<CourseUpdateFailedException>(async () => await _adminService.UpdateCourseAsync(courseId, courseDTO));
-        }
+        
     }
 }

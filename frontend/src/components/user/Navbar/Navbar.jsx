@@ -1,29 +1,48 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './Navbar.css';
-import useFetch from '../../../hooks/useFetch';
 import { AuthContext } from '../../../contexts/AuthContext';
+
+const categories = [
+  'Web Development',
+  'Mobile Development',
+  'Programming Languages',
+  'IT & Software',
+  'Game Development',
+  'Personal Development',
+  'Database Design',
+  'Software Testing',
+  'Cloud Automation',
+  'DevOps',
+  'Health & Fitness',
+  'Music',
+  'Teaching & Academics'
+];
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const { auth, setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
-  
-  const { data, error } = useFetch(searchQuery ? `/api/courses?search=${searchQuery}` : null, []);
 
   useEffect(() => {
-    if (data) {
-      setSuggestions(data);
-    }
-  }, [data]);
+    const fetchSuggestions = async () => {
+      if (searchQuery) {
+        try {
+          const response = await axios.get(`/api/courses?search=${searchQuery}`);
+          setSuggestions(response.data);
+        } catch (error) {
+          console.error('Error fetching courses:', error);
+          setSuggestions([]);
+        }
+      } else {
+        setSuggestions([]);
+      }
+    };
 
-  useEffect(() => {
-    if (error) {
-      console.error('Error fetching courses:', error);
-      setSuggestions([]);
-    }
-  }, [error]);
+    fetchSuggestions();
+  }, [searchQuery]);
 
   const handleLogout = () => {
     // Clear authentication data
@@ -65,9 +84,15 @@ const Navbar = () => {
                 Categories
               </Link>
               <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <Link className="dropdown-item" to="/category1">Category 1</Link>
-                <Link className="dropdown-item" to="/category2">Category 2</Link>
-                <Link className="dropdown-item" to="/category3">Category 3</Link>
+                {categories.map((category, index) => (
+                  <Link 
+                    key={index} 
+                    className="dropdown-item" 
+                    to={`/category/${encodeURIComponent(category)}`} // Encodes spaces as %20
+                  >
+                    {category}
+                  </Link>
+                ))}
               </div>
             </li>
           </ul>
