@@ -69,7 +69,7 @@ namespace TutorialApp.Controllers
                 if (courses == null || !courses.Any())
                 {
                     var errorResponse = new ApiResponse<string>((int)HttpStatusCode.NotFound, "No wishlisted courses found", null);
-                    return NotFound(errorResponse);
+                    return Ok(errorResponse);
                 }
                 var response = new ApiResponse<IEnumerable<Course>>((int)HttpStatusCode.OK, "Wishlisted courses retrieved successfully", courses);
                 return Ok(response);
@@ -77,8 +77,8 @@ namespace TutorialApp.Controllers
             catch (NoSuchWishlistFoundException ex)
             {
                 _logger.LogError(ex.Message);
-                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
-                return StatusCode(StatusCodes.Status500InternalServerError, errorResponse);
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.NotFound, ex.Message, null);
+                return Ok(errorResponse);
             }
             catch (Exception ex)
             {
