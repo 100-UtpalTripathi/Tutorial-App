@@ -1,0 +1,114 @@
+/* ManageQuestions.css */
+
+/* Container for the entire component */
+.container {
+  background-color: #121212; /* Dark background */
+  color: #e0e0e0; /* Light text color */
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Button styles */
+.btn-primary {
+  background-color: #1d72b8; /* Blue background for primary button */
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #155a8a; /* Darker blue on hover */
+}
+
+.btn-danger {
+  background-color: #d9534f; /* Red background for danger button */
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.btn-danger:hover {
+  background-color: #c9302c; /* Darker red on hover */
+}
+
+/* Card styles for each question */
+.question-card {
+  background-color: #1e1e1e; /* Dark card background */
+  color: #e0e0e0; /* Light text color */
+  border: 1px solid #333; /* Darker border */
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.question-card h4 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.question-card p {
+  margin: 5px 0;
+}
+
+/* Modal styles */
+.modal-content {
+  background-color: #1e1e1e; /* Dark background for modal */
+  color: #e0e0e0; /* Light text color */
+}
+
+.modal-header {
+  border-bottom: 1px solid #333; /* Darker border for modal header */
+}
+
+.modal-footer {
+  border-top: 1px solid #333; /* Darker border for modal footer */
+}
+
+/* Form styles */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-control {
+  background-color: #333; /* Dark background for form fields */
+  color: #e0e0e0; /* Light text color */
+  border: 1px solid #555; /* Darker border */
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.form-control:focus {
+  border-color: #1d72b8; /* Blue border on focus */
+  box-shadow: 0 0 0 0.2rem rgba(29, 114, 184, 0.25);
+}
+
+/* Responsive styles */
+@media (max-width: 767px) {
+  .question-card {
+    padding: 15px;
+  }
+
+  .btn-primary, .btn-danger {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  .modal-dialog {
+    width: 90%;
+    max-width: 500px;
+  }
+}
+
+@media (min-width: 768px) {
+  .modal-dialog {
+    width: 80%;
+    max-width: 600px;
+  }
+}

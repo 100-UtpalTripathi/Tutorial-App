@@ -1,0 +1,42 @@
+* General Navbar Styles */
+.navbar {
+  background-color: #343a40; /* Dark background for navbar */
+  padding: 0.5rem 1rem; /* Adjust padding to prevent overflow */
+  display: flex; /* Use flexbox to align items */
+  justify-content: space-between; /* Space between brand and items */
+  align-items: center; /* Center items vertically */
+}
+
+/* Navbar Brand */
+.navbar-brand {
+  font-size: 1.5rem; /* Font size for brand text */
+  font-weight: bold; /* Bold text for brand */
+  margin-left: 0; /* No extra margin */
+}
+
+/* Navbar Nav */
+.navbar-nav {
+  display: flex; /* Use flexbox to align items */
+  flex-direction: row; /* Arrange items in a row */
+  flex-grow: 1; /* Allow nav items to grow and fill available space */
+  align-items: center; /* Align items vertically */
+}
+
+/* Nav Items */
+.nav-item {
+  margin-left: 1rem; /* Space between links */
+  margin-right: 1rem; /* Space between links */
+}
+.nav-link {
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.nav-link:hover {
+  color: rgba(255, 255, 255, 1);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  color: #fff;
+}

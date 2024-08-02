@@ -1,0 +1,143 @@
+/* Dark Theme */
+body {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+.container {
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+button.btn-primary {
+  background-color: #6200ea;
+  border: none;
+  width: 200px;
+}
+
+button.btn-primary:hover {
+  background-color: #3700b3;
+}
+
+.modal-header, .modal-footer {
+  border-bottom: 1px solid #333;
+}
+
+.modal-header .close {
+  color: #e0e0e0;
+}
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 400px;
+  margin-left: 20px;
+}
+
+.filters input, .filters select {
+  background-color: #333;
+  color: #e0e0e0;
+  border: 1px solid #444;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.filters input::placeholder {
+  color: #888;
+}
+
+.filters input:focus, .filters select:focus {
+  border-color: #6200ea;
+}
+
+.d-flex input {
+  flex: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 576px) {
+  .card {
+    margin: 0;
+  }
+}
+
+.modal-content {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+.modal-header {
+  border-bottom: 1px solid #444;
+  color: black;
+}
+
+.modal-footer {
+  border-top: 1px solid #444;
+}
+
+.form-control {
+  background-color: #333;
+  color: #e0e0e0;
+  border: 1px solid #444;
+}
+
+.form-control:focus {
+  border-color: #6200ea;
+  background-color: #333;
+}
+
+.form-control::placeholder {
+  color: #888;
+}
+
+.close {
+  color: #e0e0e0;
+}
+
+.modal-header .close:hover {
+  color: #ffffff;
+}
+
+.btn-primary {
+  background-color: #6200ea;
+  border: none;
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.btn-primary:hover {
+  background-color: #3700b3;
+}
+
+.modal-body{
+  background-color: #333;
+}
+
+.modal-body .form-group {
+  margin-bottom: 1.5rem;
+  
+}
+.modal-body .form-group label {
+  margin-bottom: 0.5rem;
+}
+
+.modal-body .form-group input, .modal-body .form-group select {
+  width: 100%;
+}
+
+.modal-body .form-group input[type="file"] {
+  padding: 5px;
+}
+
+button span {
+  color: red;
+}

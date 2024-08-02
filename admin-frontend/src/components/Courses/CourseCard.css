@@ -1,0 +1,48 @@
+/* Dark Theme */
+.card {
+    background-color: #333;
+    color: #e0e0e0;
+    border: 1px solid #444;
+    border-radius: 8px;
+    transition: background-color 0.3s, border-color 0.3s;
+  }
+  
+  .card-img-top {
+    border-bottom: 1px solid #444;
+  }
+  
+  .card-title, .card-text {
+    color: #e0e0e0;
+  }
+  
+  .btn-warning {
+    background-color: #ff9800;
+    border: none;
+  }
+  
+  .btn-warning:hover {
+    background-color: #fb8c00;
+  }
+  
+  .btn-danger {
+    background-color: #f44336;
+    border: none;
+  }
+  
+  .btn-danger:hover {
+    background-color: #c62828;
+  }
+  
+  /* Responsive Design */
+  .card {
+    margin-bottom: 20px;
+  }
+  
+  @media (max-width: 768px) {
+    .card {
+      margin: 0;
+    }
+  }
+  button span {
+    color: red;
+  }

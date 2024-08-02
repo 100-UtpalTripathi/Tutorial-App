@@ -44,8 +44,8 @@ namespace TutorialApp.Controllers
             }
             catch (NoSuchQuizFoundException ex)
             {
-                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.NotFound, ex.Message, null);
-                return NotFound(errorResponse);
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.OK, ex.Message, null);
+                return Ok(errorResponse);
             }
             catch (Exception ex)
             {

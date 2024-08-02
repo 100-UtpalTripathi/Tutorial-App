@@ -1,50 +1,56 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useFetch from '../../../hooks/useFetch';
+import axios from 'axios';
 import './Login.css';
+import { AuthContext } from '../../../contexts/AuthContext'; // Import AuthContext
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [triggerFetch, setTriggerFetch] = useState(false);
-  const [options, setOptions] = useState(null);
   const navigate = useNavigate();
+  const { setAuth } = useContext(AuthContext); // Destructure setAuth from AuthContext
 
-  const { data, error: fetchError, loading: fetchLoading } = useFetch(
-    triggerFetch ? 'https://localhost:7293/api/Auth/user/login' : null,
-    options
-  );
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
-    setOptions({
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const response = await axios.post('https://localhost:7293/api/Auth/user/login', {
+        email,
+        password,
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-    setTriggerFetch(true);
-  };
+      console.log("Full response:", response);
+      console.log("Response data:", response.data);
 
-  useEffect(() => {
-    if (data) {
-      const { token, email: userEmail, role } = data;
-      localStorage.setItem('token', token);
-      localStorage.setItem('email', userEmail);
-      localStorage.setItem('role', role);
-      navigate('/');
-    } else if (fetchError) {
-      setError(fetchError);
+      const { statusCode, statusMessage, data } = response.data;
+
+      if (statusCode === 200) {
+        const { token, email: userEmail, role } = data;
+        localStorage.setItem('token', token);
+        localStorage.setItem('email', userEmail);
+        localStorage.setItem('role', role);
+        
+        // Update auth context state
+        setAuth({ token, email: userEmail, role });
+
+        navigate('/');
+      } else {
+        setError(statusMessage || 'Login failed');
+      }
+    } catch (err) {
+      setError(err.response?.data?.statusMessage || err.message || 'An unexpected error occurred');
+    } finally {
+      setLoading(false);
     }
-    setLoading(fetchLoading);
-  }, [data, fetchError, fetchLoading, navigate]);
+  };
 
   return (
     <div className="login-container">
