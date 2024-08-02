@@ -1,0 +1,50 @@
+/* Dark Theme */
+.container {
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.modal-content {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+.modal-header, .modal-footer {
+  border-color: #444;
+}
+
+.modal-header .close {
+  color: #e0e0e0;
+}
+
+.btn-primary {
+  background-color: #6200ea;
+  border: none;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #3700b3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 576px) {
+  .row {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .col-md-4 {
+    margin-bottom: 15px;
+  }
+}
+button span {
+  color: red;
+}

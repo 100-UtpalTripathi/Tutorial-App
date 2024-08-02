@@ -1,0 +1,60 @@
+/* Dark Theme */
+.card {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  border: 1px solid #333;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.card:hover {
+  background-color: #333;
+  border-color: #444;
+}
+
+.card-header {
+  background-color: #333;
+  color: #e0e0e0;
+  border-bottom: 1px solid #444;
+}
+
+.card-body {
+  padding: 15px;
+}
+
+.card-footer {
+  background-color: #333;
+  border-top: 1px solid #444;
+  padding: 10px;
+}
+
+.btn-primary {
+  background-color: #6200ea;
+  border: none;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #3700b3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .card-body {
+    padding: 10px;
+  }
+
+  .card-footer {
+    padding: 8px;
+  }
+}
+
+@media (max-width: 576px) {
+  .card {
+    margin: 0;
+  }
+}
+button span {
+  color: red;
+}

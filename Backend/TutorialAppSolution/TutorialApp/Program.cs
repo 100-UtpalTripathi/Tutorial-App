@@ -122,6 +122,7 @@ namespace Tutorial_App
             builder.Services.AddScoped<IWishlistService, WishlistService>();
             builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
             builder.Services.AddScoped<ICartService, CartService>();
+            builder.Services.AddScoped<IQuestionService, QuestionService>();
 
 
 

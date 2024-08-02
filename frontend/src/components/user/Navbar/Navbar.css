@@ -2,19 +2,30 @@
 .navbar {
   background-color: #343a40; /* Dark background for navbar */
   padding: 0.5rem 1rem; /* Adjust padding to prevent overflow */
+  display: flex; /* Use flexbox to align items */
+  justify-content: space-between; /* Space between brand and items */
+  align-items: center; /* Center items vertically */
 }
 
 /* Navbar Brand */
 .navbar-brand {
   font-size: 1.5rem; /* Font size for brand text */
   font-weight: bold; /* Bold text for brand */
-  margin-left: 30px; /* Space from the left edge */
+  margin-left: 0; /* No extra margin */
 }
 
-/* Navbar Links */
-.nav-link {
-  font-size: 1rem; /* Font size for navbar links */
+/* Navbar Nav */
+.navbar-nav {
+  display: flex; /* Use flexbox to align items */
+  flex-direction: row; /* Arrange items in a row */
+  flex-grow: 1; /* Allow nav items to grow and fill available space */
+  align-items: center; /* Align items vertically */
+}
+
+/* Nav Items */
+.nav-item {
   margin-left: 1rem; /* Space between links */
+  margin-right: 1rem; /* Space between links */
 }
 
 /* Dropdown Menu */
@@ -57,6 +68,8 @@
 .form-inline {
   display: flex;
   align-items: center; /* Align items vertically in the center */
+  flex-grow: 1; /* Allow search form to grow and fill available space */
+  margin-left: 1rem; /* Space from other items */
 }
 
 .form-control {
@@ -64,6 +77,7 @@
   flex: 1; /* Allow search input to take available space */
 }
 
+/* Search Suggestions */
 .search-suggestions {
   position: absolute; /* Positioned relative to the search input */
   top: 100%; /* Align to the bottom of the search input */
