@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import CourseCard from "./CourseCard";
 import "react-toastify/dist/ReactToastify.css";
 import "./MyLearning.css"; // Add your custom styles here
@@ -94,8 +94,7 @@ const MyLearning = () => {
         </div>
       </div>
 
-      {/* Toast Container */}
-      <ToastContainer />
+      
     </>
   );
 };
