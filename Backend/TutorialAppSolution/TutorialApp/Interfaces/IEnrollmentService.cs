@@ -6,7 +6,7 @@ namespace TutorialApp.Interfaces
     public interface IEnrollmentService
     {
         Task<Enrollment> EnrollCourseAsync(EnrollmentDTO enrollmentDTO);
-        Task<IEnumerable<Course>> GetEnrolledCoursesByUserAsync(string userEmail);
+        Task<IEnumerable<EnrolledCoursesDTO>> GetEnrolledCoursesByUserAsync(string userEmail);
         Task<Enrollment> UpdateEnrollmentStatusAsync(EnrollmentDTO enrollmentDTO);
     }
 }

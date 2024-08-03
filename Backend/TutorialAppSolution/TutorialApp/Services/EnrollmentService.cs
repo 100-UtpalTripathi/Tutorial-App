@@ -49,7 +49,7 @@ namespace TutorialApp.Services
 
         #region Get Enrolled Courses By User
 
-        public async Task<IEnumerable<Course>> GetEnrolledCoursesByUserAsync(string userEmail)
+        public async Task<IEnumerable<EnrolledCoursesDTO>> GetEnrolledCoursesByUserAsync(string userEmail)
         {
             var enrollments = await _enrollmentRepository.Get();
 
@@ -57,18 +57,31 @@ namespace TutorialApp.Services
                 throw new NoSuchEnrollmentFoundException("No enrollments found.");
 
             var userEnrollments = enrollments.Where(e => e.UserEmail == userEmail);
-            var courses = new List<Course>();
+            var courses = new List<EnrolledCoursesDTO>();
 
             foreach (var enrollment in userEnrollments)
             {
                 var course = await _courseRepository.GetByKey(enrollment.CourseId);
                 if (course != null)
                 {
-                    courses.Add(course);
+                    var enrolledCourse = new EnrolledCoursesDTO
+                    {
+                        CourseId = course.CourseId,
+                        Title = course.Title,
+                        Description = course.Description,
+                        Status = enrollment.Status,
+                        CategoryName = course.CategoryName,
+                        Price = course.Price,
+                        CourseImageUrl = course.CourseImageUrl,
+                        InstructorName = course.InstructorName
+                    };
+
+                    courses.Add(enrolledCourse);
                 }
             }
 
             return courses;
+            
         }
 
         #endregion

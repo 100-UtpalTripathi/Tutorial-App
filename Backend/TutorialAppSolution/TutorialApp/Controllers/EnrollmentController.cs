@@ -66,16 +66,16 @@ namespace TutorialApp.Controllers
                 if (courses == null || !courses.Any())
                 {
                     var errorResponse = new ApiResponse<string>((int)HttpStatusCode.NotFound, "No enrolled courses found", null);
-                    return NotFound(errorResponse);
+                    return Ok(errorResponse);
                 }
-                var response = new ApiResponse<IEnumerable<Course>>((int)HttpStatusCode.OK, "Enrolled courses retrieved successfully", courses);
+                var response = new ApiResponse<IEnumerable<EnrolledCoursesDTO>>((int)HttpStatusCode.OK, "Enrolled courses retrieved successfully", courses);
                 return Ok(response);
             }
             catch (NoSuchEnrollmentFoundException ex)
             {
                 _logger.LogError(ex, ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.NotFound, ex.Message, null);
-                return NotFound(errorResponse);
+                return Ok(errorResponse);
             }
             catch (Exception ex)
             {

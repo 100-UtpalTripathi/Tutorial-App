@@ -45,7 +45,7 @@ namespace TutorialApp.Controllers
             {
                 _logger.LogError(ex.Message);
                 var errorResponse = new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null);
-                return BadRequest(errorResponse);
+                return Ok(errorResponse);
             }
             catch (NoSuchCourseFoundException ex)
             {

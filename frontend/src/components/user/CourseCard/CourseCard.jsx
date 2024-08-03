@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Import CSS for react-toastify
 import "./CourseCard.css"; // Create this CSS file for card-specific styles
 
 const CourseCard = ({ course }) => {
@@ -12,7 +14,6 @@ const CourseCard = ({ course }) => {
         const response = await axios.get(
           `https://localhost:7293/api/user/course/Wishlist/get/${userEmail}`
         );
-        //console.log('Wishlist response:', response.data);
         const wishlistedCourses = response.data.data;
         if (!wishlistedCourses) return;
         setIsWishlisted(
@@ -41,6 +42,7 @@ const CourseCard = ({ course }) => {
             },
           }
         );
+        toast.success('Course removed from wishlist!');
       } else {
         await axios.post(
           "https://localhost:7293/api/user/course/Wishlist/add",
@@ -49,25 +51,32 @@ const CourseCard = ({ course }) => {
             courseId: course.courseId,
           }
         );
+        toast.success('Course added to wishlist!');
       }
       setIsWishlisted(!isWishlisted);
     } catch (error) {
       console.error("Error toggling wishlist status:", error);
+      toast.error('Error updating wishlist status.');
     }
   };
 
   const handleAddToCart = async () => {
     try {
-      await axios.post("https://localhost:7293/api/user/Cart/add", {
+      const response = await axios.post("https://localhost:7293/api/user/Cart/add", {
         userEmail,
         courseId: course.courseId,
         price: course.price,
       });
-      // Optionally show a success message or update the UI
+      if(response.data.data)
+        toast.success('Course added to cart!');
+      else
+        toast.error('Course already in cart!');
     } catch (error) {
       console.error("Error adding course to cart:", error);
+      toast.error('Error adding course to cart.');
     }
   };
+
   return (
     <div className="card course-card">
       <img
