@@ -1,83 +1,127 @@
-/* CoursesByCategory.css */
-
 /* General container styles */
 .courses-container {
-    background-color: #121212; /* Dark background color */
-    color: #e0e0e0; /* Light text color for better contrast */
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .course-card {
-    background-color: #1e1e1e; /* Dark card background */
-    color: #e0e0e0; /* Light text color */
-    border: 1px solid #333; /* Border color to separate cards */
-    border-radius: 8px;
-    margin-bottom: 20px;
-    max-width: 300px; /* Limit card width */
-    width: 100%; /* Full width on small screens */
-    transition: background-color 0.3s, color 0.3s;
-  }
-  
-  .card-img-top {
-    border-bottom: 1px solid #333; /* Border between image and text */
-  }
-  
-  .card-body {
-    padding: 15px;
-  }
-  
-  .card-title {
-    color: #ffffff; /* Light text color for the title */
-    font-size: 1.25rem; /* Slightly larger font size */
-  }
-  
-  .card-text {
-    color: #b0b0b0; /* Slightly lighter text color for description and other texts */
-    font-size: 1rem; /* Ensure text is readable */
-  }
-  
-  /* Responsive styles */
-  @media (max-width: 768px) {
-    .courses-container {
+  background-color: #121212; /* Dark background color */
+  color: #e0e0e0; /* Light text color for better contrast */
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Filter styles */
+.filters {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.filters input[type="text"],
+.filters input[type="number"] {
+  background-color: #1e1e1e; /* Dark background */
+  color: #e0e0e0; /* Light text color */
+  border: 1px solid #333; /* Border color */
+  border-radius: 5px;
+  padding: 10px;
+  max-width: 300px; /* Limit input width */
+  margin-left: 20px;
+}
+
+.filters input[type="text"]::placeholder,
+.filters input[type="number"]::placeholder {
+  color: #b0b0b0; /* Placeholder text color */
+}
+
+.filters .d-flex {
+  display: flex;
+  align-items: center;
+}
+
+.filters .d-flex input {
+  width: 100%;
+}
+
+.filters .d-flex input[type="number"] {
+  flex: 1;
+}
+
+.filters .d-flex input[type="number"]:first-child {
+  margin-right: 10px;
+}
+
+/* Course card styles */
+.course-card {
+  background-color: #1e1e1e; /* Dark card background */
+  color: #e0e0e0; /* Light text color */
+  border: 1px solid #333; /* Border color to separate cards */
+  border-radius: 8px;
+  margin-bottom: 20px;
+  max-width: 300px; /* Limit card width */
+  width: 100%; /* Full width on small screens */
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.course-card:hover {
+  background-color: #333; /* Slightly lighter background on hover */
+}
+
+.card-img-top {
+  border-bottom: 1px solid #333; /* Border between image and text */
+}
+
+.card-body {
+  padding: 15px;
+}
+
+.card-title {
+  color: #ffffff; /* Light text color for the title */
+  font-size: 1.25rem; /* Slightly larger font size */
+}
+
+.card-text {
+  color: #b0b0b0; /* Slightly lighter text color for description and other texts */
+  font-size: 1rem; /* Ensure text is readable */
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .courses-container {
       padding: 10px;
-    }
-  
-    .course-card {
+  }
+
+  .course-card {
       max-width: 100%; /* Full width on smaller screens */
-    }
-  
-    .card-title {
+  }
+
+  .card-title {
       font-size: 1.1rem; /* Slightly smaller font size on small screens */
-    }
-  
-    .card-text {
+  }
+
+  .card-text {
       font-size: 0.9rem; /* Slightly smaller font size on small screens */
-    }
   }
-  
-  @media (max-width: 576px) {
-    .course-card {
+}
+
+@media (max-width: 576px) {
+  .course-card {
       margin-bottom: 10px; /* Reduce margin on very small screens */
-    }
-  
-    .card-title {
+  }
+
+  .card-title {
       font-size: 1rem; /* Adjust font size further on very small screens */
-    }
-  
-    .card-text {
+  }
+
+  .card-text {
       font-size: 0.85rem; /* Adjust font size further on very small screens */
-    }
   }
-  
-  .card {
-    overflow: hidden; /* Prevent content overflow */
-  }
-  
-  .card-img-top {
-    width: 100%; /* Ensure image covers the card width */
-    height: auto; /* Maintain aspect ratio */
-  }
-  
+}
+
+.card {
+  overflow: hidden; /* Prevent content overflow */
+}
+
+.card-img-top {
+  width: 100%; /* Ensure image covers the card width */
+  height: auto; /* Maintain aspect ratio */
+}

@@ -66,7 +66,14 @@ const CourseCard = ({ course }) => {
         userEmail,
         courseId: course.courseId,
         price: course.price,
-      });
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
       if(response.data.data)
         toast.success('Course added to cart!');
       else

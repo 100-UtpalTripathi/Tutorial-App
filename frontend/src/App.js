@@ -8,7 +8,6 @@ import Cart from "./components/user/Cart/Cart";
 import Profile from "./components/user/Profile/Profile";
 import Login from "./components/user/Login/Login";
 import Signup from "./components/user/Signup/Signup";
-import CourseDetails from "./components/user/CourseDetails/CourseDetails";
 import CoursesByCategory from "./components/user/Navbar/CoursesByCategory";
 import Quiz from "./components/user/Quiz/Quiz"; // Import the Quiz component
 import ProtectedRoute from "./ProtectedRoute";
@@ -21,7 +20,7 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/course/:id" element={<CourseDetails />} />
+        
         <Route
           path="/mylearning"
           element={
@@ -56,8 +55,18 @@ const App = () => {
         />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/category/:categoryId" element={<CoursesByCategory />} />
-        <Route path="/quiz/:courseId" element={<Quiz />} />
+        <Route path="/category/:categoryId" element={
+            <ProtectedRoute>
+              <CoursesByCategory />
+            </ProtectedRoute>
+          
+          } 
+        />
+        <Route path="/quiz/:courseId" element={
+            <ProtectedRoute>
+              <Quiz />
+            </ProtectedRoute>
+        } />
       </Routes>
       <ToastContainer />
     </>

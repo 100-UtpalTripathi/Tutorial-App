@@ -59,7 +59,11 @@ namespace TutorialApp.Controllers
             if (courseDTO.Image != null)
             {
                 var fileStream = courseDTO.Image.OpenReadStream();
-                var result = await _azureBlobService.UploadFileAsync("tutorialapp", "CourseImages", courseDTO.CategoryName + courseDTO.InstructorName + courseDTO.Image.FileName, fileStream);
+                // Generate a unique file name
+                var uniqueFileName = GenerateUniqueFileName(courseDTO.Image.FileName);
+
+                // Upload file with a unique name
+                var result = await _azureBlobService.UploadFileAsync("tutorialapp", "CourseImages", uniqueFileName, fileStream);
 
                 if (result.IsError)
                 {
@@ -105,7 +109,11 @@ namespace TutorialApp.Controllers
             if (courseDTO.Image != null)
             {
                 var fileStream = courseDTO.Image.OpenReadStream();
-                var result = await _azureBlobService.UploadFileAsync("tutorialapp", "CourseImages", courseDTO.CategoryName + courseDTO.InstructorName + courseDTO.Image.FileName, fileStream);
+                // Generate a unique file name
+                var uniqueFileName = GenerateUniqueFileName(courseDTO.Image.FileName);
+
+                // Upload file with a unique name
+                var result = await _azureBlobService.UploadFileAsync("tutorialapp", "CourseImages", uniqueFileName, fileStream);
 
                 if (result.IsError)
                 {
@@ -179,5 +187,13 @@ namespace TutorialApp.Controllers
         }
 
         #endregion
+
+
+        private string GenerateUniqueFileName(string originalFileName)
+        {
+            var fileExtension = Path.GetExtension(originalFileName);
+            var uniqueFileName = $"{Guid.NewGuid()}_{DateTime.UtcNow:yyyyMMddHHmmss}{fileExtension}";
+            return uniqueFileName;
+        }
     }
 }

@@ -138,6 +138,11 @@ button.btn-primary:hover {
   padding: 5px;
 }
 
-button span {
+button.close {
   color: red;
+  margin-left: auto;
+}
+
+.modal-title{
+  color: #e0e0e0;
 }

@@ -6,6 +6,7 @@ using TutorialApp.Models.DTOs;
 using System.Net;
 using TutorialApp.Exceptions.User;
 using Microsoft.AspNetCore.Cors;
+using TutorialApp.Models.DTOs.Course;
 
 namespace TutorialApp.Controllers
 {
@@ -37,7 +38,11 @@ namespace TutorialApp.Controllers
             if (userRegisterDTO.Image != null)
             {
                 var fileStream = userRegisterDTO.Image.OpenReadStream();
-                var result = await _azureBlobService.UploadFileAsync("tutorialapp", "userProfile", userRegisterDTO.Phone + userRegisterDTO.Image.FileName, fileStream);
+                // Generate a unique file name
+                var uniqueFileName = GenerateUniqueFileName(userRegisterDTO.Image.FileName);
+
+                // Upload file with a unique name
+                var result = await _azureBlobService.UploadFileAsync("tutorialapp", "CourseImages", uniqueFileName, fileStream);
 
                 if (result.IsError)
                 {
@@ -107,6 +112,13 @@ namespace TutorialApp.Controllers
             {_logger.LogError(ex.Message);
                 return BadRequest(new ApiResponse<string>((int)HttpStatusCode.BadRequest, ex.Message, null));
             }
+
+        }
+        private string GenerateUniqueFileName(string originalFileName)
+        {
+            var fileExtension = Path.GetExtension(originalFileName);
+            var uniqueFileName = $"{Guid.NewGuid()}_{DateTime.UtcNow:yyyyMMddHHmmss}{fileExtension}";
+            return uniqueFileName;
         }
 
         #endregion

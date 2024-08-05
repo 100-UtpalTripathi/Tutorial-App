@@ -12,7 +12,14 @@ const Cart = () => {
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
-        const response = await axios.get(`https://localhost:7293/api/user/Cart/get/${userEmail}`);
+        const response = await axios.get(`https://localhost:7293/api/user/Cart/get/${userEmail}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+
+        );
         setCartItems(response.data.data || []);
       } catch (error) {
         console.error("Error fetching cart items:", error);
@@ -25,7 +32,9 @@ const Cart = () => {
   const handleRemoveFromCart = async (courseId, price) => {
     try {
       await axios.delete("https://localhost:7293/api/user/Cart/delete", {
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+         },
         data: { userEmail, courseId, price }
       });
       setCartItems(cartItems.filter(item => item.courseId !== courseId));
@@ -50,7 +59,13 @@ const Cart = () => {
         userEmail,
         courseId: selectedCourse.courseId,
         status: "Registered"
-      });
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+      );
       // Remove course from cart after successful purchase
       await handleRemoveFromCart(selectedCourse.courseId, selectedCourse.price);
       toast.success("Course purchased and removed from cart successfully!");

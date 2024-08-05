@@ -18,8 +18,14 @@ const Quizzes = () => {
 
   const fetchQuiz = async () => {
     try {
-      const response = await axios.get(`https://localhost:7293/api/course/Quiz/get/${courseId}`);
-      console.log(response.data.data);
+      const response = await axios.get(`https://localhost:7293/api/course/Quiz/get/${courseId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      );
+      //console.log(response.data.data);
       setQuiz(response.data.data);
       setLoading(false);
     } catch (error) {
@@ -48,7 +54,13 @@ const Quizzes = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('https://localhost:7293/api/course/Quiz/create', formData);
+      await axios.post('https://localhost:7293/api/course/Quiz/create', formData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      );
       fetchQuiz();
       handleClose();
     } catch (error) {
@@ -58,7 +70,13 @@ const Quizzes = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://localhost:7293/api/course/Quiz/delete/${id}`);
+      await axios.delete(`https://localhost:7293/api/course/Quiz/delete/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      );
       fetchQuiz();
     } catch (error) {
       console.error('Error deleting quiz:', error);

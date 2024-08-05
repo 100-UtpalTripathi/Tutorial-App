@@ -37,7 +37,13 @@ const CoursesQuiz = () => {
 
   const fetchCourses = async () => {
     try {
-      const response = await axios.get('https://localhost:7293/api/admin/Courses');
+      const response = await axios.get('https://localhost:7293/api/admin/Courses',
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      );
       setCourses(response.data.data);
       setLoading(false);
     } catch (error) {
@@ -104,15 +110,20 @@ const CoursesQuiz = () => {
           placeholder="Min Price"
           value={minPrice}
           onChange={handleMinPriceChange}
+          min='0'
         />
         <input
           type="number"
           placeholder="Max Price"
           value={maxPrice}
           onChange={handleMaxPriceChange}
+          min='0'
         />
       </div>
+
+      <h4>Select a course to manage quizzes: </h4>
       <div className="row">
+        
         {filteredCourses.length > 0 ? (
           filteredCourses.map(course => (
             <div className="col-md-4 mb-4" key={course.courseId}>

@@ -48,8 +48,14 @@ const Courses = () => {
 
   const fetchCourses = async () => {
     try {
+      const token = localStorage.getItem("token");
       const response = await axios.get(
-        "https://localhost:7293/api/admin/Courses"
+        "https://localhost:7293/api/admin/Courses",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setCourses(response.data.data);
       setLoading(false);
@@ -125,6 +131,7 @@ const Courses = () => {
           {
             headers: {
               "Content-Type": "multipart/form-data",
+              "Authorization": `Bearer ${localStorage.getItem("token")}`,
             },
           }
         );
@@ -135,6 +142,7 @@ const Courses = () => {
           {
             headers: {
               "Content-Type": "multipart/form-data",
+              "Authorization": `Bearer ${localStorage.getItem("token")}`,
             },
           }
         );
@@ -149,7 +157,11 @@ const Courses = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `https://localhost:7293/api/admin/Courses/delete/${id}`
+        `https://localhost:7293/api/admin/Courses/delete/${id}`, {
+          headers: {
+            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
       fetchCourses();
     } catch (error) {
@@ -209,6 +221,7 @@ const Courses = () => {
             onChange={(e) =>
               setMinPrice(e.target.value ? parseInt(e.target.value) : 0)
             }
+            min='0'
             className="form-control mr-3"
           /> &nbsp; _ &nbsp;
           <input
@@ -218,6 +231,7 @@ const Courses = () => {
             onChange={(e) =>
               setMaxPrice(e.target.value ? parseInt(e.target.value) : Infinity)
             }
+            min='0'
             className="form-control ml-3"
           />
         </div>
@@ -324,6 +338,7 @@ const Courses = () => {
                       value={formData.price}
                       onChange={handleInputChange}
                       placeholder="Enter price"
+                      min='0'
                       required
                     />
                   </div>

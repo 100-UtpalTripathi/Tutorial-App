@@ -1,0 +1,55 @@
+/* IntroPage.css */
+.hero {
+    background-color: #007bff;
+    color: white;
+    padding: 100px 20px;
+    text-align: center;
+  }
+  
+  .hero h2 {
+    font-size: 2.5rem;
+  }
+  
+  .hero p {
+    font-size: 1.2rem;
+  }
+  
+  .hero .btn-primary {
+    background-color: #28a745;
+    padding: 15px 30px;
+  }
+  
+  .features {
+    padding: 40px 20px;
+    background-color: #f8f9fa;
+  }
+  
+  .feature {
+    margin-bottom: 20px;
+  }
+  
+  .feature h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .footer {
+    background-color: #343a40;
+    color: white;
+    padding: 20px;
+  }
+  
+  .footer p {
+    margin: 0;
+  }
+  
+  .footer nav {
+    margin-top: 10px;
+  }
+  
+  .footer nav a {
+    color: #17a2b8;
+    text-decoration: none;
+    margin: 0 10px;
+  }
+  

@@ -27,7 +27,12 @@ const ManageQuestions = () => {
   const fetchQuestions = async () => {
     try {
       const response = await axios.get(
-        `https://localhost:7293/api/Question/get/${quizId}`
+        `https://localhost:7293/api/Question/get/${quizId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+
       );
       //console.log(response.data.data);
       setQuestions(response.data.data);
@@ -79,14 +84,16 @@ const ManageQuestions = () => {
         // Use PUT for updating
         await axios.put(apiUrl, formData, {
           headers: {
-            'Content-Type': 'application/json' // Ensure JSON content type
+            'Content-Type': 'application/json', // Ensure JSON content type
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
           }
         });
       } else {
         // Use POST for creating
         await axios.post(apiUrl, formData, {
           headers: {
-            'Content-Type': 'application/json' // Ensure JSON content type
+            'Content-Type': 'application/json', // Ensure JSON content type
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
           }
         });
       }
@@ -114,7 +121,13 @@ const ManageQuestions = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://localhost:7293/api/Question/delete/${id}`);
+      await axios.delete(`https://localhost:7293/api/Question/delete/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      );
       fetchQuestions();
     } catch (error) {
       console.error("Error deleting question:", error);

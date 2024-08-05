@@ -12,6 +12,7 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Azure.Storage.Blobs;
+using Azure.Identity;
 
 namespace Tutorial_App
 {
@@ -20,6 +21,16 @@ namespace Tutorial_App
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+
+            var keyVaultUri = "https://tutorialappvault.vault.azure.net/";
+
+            if(!string.IsNullOrEmpty(keyVaultUri))
+            {
+                builder.Configuration.AddAzureKeyVault(new Uri(keyVaultUri), new DefaultAzureCredential());
+            }
+
+
 
             // Add services to the container.
 
@@ -87,6 +98,7 @@ namespace Tutorial_App
             {
                 var configuration = x.GetRequiredService<IConfiguration>();
                 return new BlobServiceClient(configuration.GetConnectionString("azureBlobStorage"));
+                // return new BlobServiceClient(configuration["azureBlobStorage"]);
             });
 
             #endregion
@@ -95,6 +107,7 @@ namespace Tutorial_App
             #region Contexts
             builder.Services.AddDbContext<TutorialAppContext>(
                 options => options.UseSqlServer(builder.Configuration.GetConnectionString("defaultConnection"))
+                // options => options.UseSqlServer(builder.Configuration["sqlConnectionString"])
                 );
             #endregion
 

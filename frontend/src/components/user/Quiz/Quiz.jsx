@@ -55,7 +55,7 @@ const Quiz = () => {
 
   return (
     <div className="container mt-4">
-      <h2>Quiz for Course {courseId}</h2>
+      <h2>Check Your Knowledge : </h2>
       {questions.length > 0 ? (
         <form onSubmit={handleSubmit}>
           {questions.map((question) => (

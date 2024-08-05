@@ -13,7 +13,7 @@ const CourseCard = ({ course, onEdit, onDelete }) => {
         <p className="card-text"><strong>Price:</strong> ${course.price}</p>
         <p className="card-text"><strong>Instructor:</strong> {course.instructorName}</p>
         <div className="d-flex justify-content-between">
-          <button className="btn btn-warning" onClick={onEdit}>Edit</button>
+          <button className="btn btn-warning" onClick={onEdit}>Edit</button> &nbsp; &nbsp;
           <button className="btn btn-danger" onClick={onDelete}>Delete</button>
         </div>
       </div>

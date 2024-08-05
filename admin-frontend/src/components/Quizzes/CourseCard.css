@@ -1,60 +1,55 @@
-/* Dark Theme */
-.card {
-  background-color: #1e1e1e;
-  color: #e0e0e0;
-  border: 1px solid #333;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  transition: background-color 0.3s, border-color 0.3s;
+/* CourseCard container */
+.course-card {
+  background-color: #1e1e1e; /* Dark background for the card */
+  color: #e0e0e0; /* Light text color for contrast */
+  border-radius: 8px; /* Rounded corners */
+  padding: 20px; /* Padding inside the card */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Shadow for depth */
+  transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s; /* Smooth transitions */
+  cursor: pointer; /* Pointer cursor on hover */
+  max-width: 300px; /* Max width of the card */
+  margin: 10px; /* Margin around the card */
 }
 
-.card:hover {
-  background-color: #333;
-  border-color: #444;
+/* Hover effects */
+.course-card:hover {
+  transform: translateY(-5px); /* Lift the card on hover */
+  background-color: #333; /* Slightly lighter background color */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Stronger shadow on hover */
 }
 
-.card-header {
-  background-color: #333;
-  color: #e0e0e0;
-  border-bottom: 1px solid #444;
+/* Card title styling */
+.course-card h3 {
+  font-size: 1.5rem; /* Larger font size for title */
+  margin-bottom: 10px; /* Space below the title */
+  color: #ffffff; /* Light text color */
 }
 
-.card-body {
-  padding: 15px;
+/* Card paragraph styling */
+.course-card p {
+  font-size: 1rem; /* Font size for description */
+  margin: 5px 0; /* Vertical margin for spacing */
+  color: #b0b0b0; /* Slightly lighter text color */
 }
 
-.card-footer {
-  background-color: #333;
-  border-top: 1px solid #444;
-  padding: 10px;
+/* Button styling */
+.course-card .btn {
+  background-color: #007bff; /* Primary button color */
+  border-color: #007bff; /* Button border color */
+  color: #ffffff; /* Button text color */
+  transition: background-color 0.3s, border-color 0.3s; /* Smooth transition for hover effects */
 }
 
-.btn-primary {
-  background-color: #6200ea;
-  border: none;
-  color: #fff;
+/* Button hover effects */
+.course-card .btn:hover {
+  background-color: #0056b3; /* Darker button color on hover */
+  border-color: #004085; /* Darker border color on hover */
 }
 
-.btn-primary:hover {
-  background-color: #3700b3;
-}
-
-/* Responsive Design */
+/* Responsive styles */
 @media (max-width: 768px) {
-  .card-body {
-    padding: 10px;
+  .course-card {
+    max-width: 100%; /* Full width on small screens */
+    margin: 10px 0; /* Vertical margin on small screens */
   }
-
-  .card-footer {
-    padding: 8px;
-  }
-}
-
-@media (max-width: 576px) {
-  .card {
-    margin: 0;
-  }
-}
-button span {
-  color: red;
 }

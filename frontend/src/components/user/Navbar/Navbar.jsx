@@ -96,7 +96,7 @@ const Navbar = () => {
               </div>
             </li>
           </ul>
-          <form className="form-inline my-2 my-lg-0">
+          {/* <form className="form-inline my-2 my-lg-0">
             <input 
               className="form-control mr-sm-2" 
               type="search" 
@@ -118,7 +118,7 @@ const Navbar = () => {
                 ))}
               </div>
             )}
-          </form>
+          </form> */}
           <ul className="navbar-nav ml-auto">
             {auth.token ? (
               <>
@@ -131,9 +131,7 @@ const Navbar = () => {
                 <li className="nav-item">
                   <Link className="nav-link" to="/cart"><i className="bi bi-cart"></i></Link>
                 </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/profile">Profile</Link>
-                </li>
+                
                 <li className="nav-item">
                   <button className="nav-link btn btn-link" onClick={handleLogoutClick}>Logout</button>
                 </li>
