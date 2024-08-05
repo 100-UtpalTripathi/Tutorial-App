@@ -97,17 +97,17 @@ namespace Tutorial_App
             builder.Services.AddSingleton(x =>
             {
                 var configuration = x.GetRequiredService<IConfiguration>();
-                return new BlobServiceClient(configuration.GetConnectionString("azureBlobStorage"));
-                // return new BlobServiceClient(configuration["azureBlobStorage"]);
+                //return new BlobServiceClient(configuration.GetConnectionString("azureBlobStorage"));
+                return new BlobServiceClient(configuration["blobConnectionString"]);
             });
 
             #endregion
 
-
+            
             #region Contexts
             builder.Services.AddDbContext<TutorialAppContext>(
-                options => options.UseSqlServer(builder.Configuration.GetConnectionString("defaultConnection"))
-                // options => options.UseSqlServer(builder.Configuration["sqlConnectionString"])
+                //options => options.UseSqlServer(builder.Configuration.GetConnectionString("defaultConnection"))
+                options => options.UseSqlServer(builder.Configuration["sqlConnectionString"])
                 );
             #endregion
 
