@@ -4,74 +4,88 @@
 
 ### Admin Functionality
 
-1. **Admin Login**
-   - Admins can log in using email and password.
+#### Admin Login
+- Admins can log in using email and password.
 
-2. **Course Management (CRUD)**
-   - Admins can create new courses, including title, description, and modules.
-   - Admins can edit existing courses.
-   - Admins can delete courses.
-   - Admins can view a list of all courses.
+#### Course Management (CRUD)
+- Create, edit, and delete courses, including managing titles, descriptions, and modules.
+- View a list of all courses.
+
+#### Quiz Management
+- Create, edit, and delete self-evaluation quizzes related to courses.
+- Manage quiz questions by adding, editing, and deleting them.
+- View all quizzes associated with a specific course.
 
 ### User Functionality
 
-3. **Navigation**
-   - **Home Page Navigation**
-     - A brand logo in the navbar redirects to the home page.
-   - **Search Bar**
-     - Users can type in the search bar to see a dropdown of related courses.
-     - Clicking on a suggested course redirects to that course's detail page.
-   - **Categories**
-     - A "Categories" option in the navbar shows all related courses from the selected category.
+#### Navigation
 
-4. **Course Viewing and Purchasing**
-   - **Course Details Page**
-     - Users can click on a course to view its details and modules.
-     - Users can purchase courses directly from the course details page.
-   - **My Learning Menu**
-     - Users have a "My Learning" menu item in the navbar.
-     - Clicking on "My Learning" opens a page showing all purchased courses marked as registered, started, or completed.
+- **Home Page Navigation**  
+  - A brand logo in the navbar redirects to the home page.
 
-5. **Course Completion and Quiz**
-   - **Mark as Completed**
-     - Users can mark a course as completed.
-     - Upon marking as completed, a quiz is triggered to check the user's learning.
-     - Users can view their quiz results after completion.
+- **Search Bar**  
+  - Type in the search bar to see a dropdown of related courses.
+  - Click on a suggested course to view its details.
 
-6. **Wishlist**
-   - **Wishlist Icon**
-     - A heart icon in the navbar shows all wishlisted courses.
-     - Users can view wishlisted courses from the "My Learning" page as well.
+- **Categories**  
+  - Browse courses by category using the "Categories" option in the navbar.
 
-7. **Cart**
-   - **Cart Icon**
-     - A cart icon in the navbar shows all courses in the cart.
-     - Users can view and manage their cart contents.
+#### Course Viewing and Purchasing
 
-8. **User Authentication and Profile**
-   - **Login/Logout and Registration**
-     - Navbar shows login/register options if the user is not authenticated (based on JWT).
-     - Navbar shows logout and view profile options if the user is authenticated.
-   - **View Profile**
-     - Users can view and edit their profile information.
+- **Course Details Page**  
+  - View detailed information and modules of a course.
+  - Purchase courses directly from the course details page.
 
-### Business Logic
+- **My Learning Menu**  
+  - Access purchased courses marked as registered, started, or completed.
 
-- **Course Progress Tracking**
-  - Track user progress on courses as registered, started, or completed.
-- **Discounts**
-  - Provide a 10% discount on the next course purchase if a user completes 3 courses.
+#### Course Completion and Quiz
 
-## Non-functional Requirements
+- **Mark as Completed**  
+  - Mark a course as completed to trigger a quiz.
+  - Take quizzes after course completion and view your performance results.
 
-9. **Security and Data Privacy**
-   - User passwords should be securely hashed.
-   - JWT should be used for secure authentication.
-   - Ensure proper access control for admin functionalities.
+#### Wishlist
 
-10. **Usability**
-    - The interface should be intuitive and easy to navigate.
-    - Responsive design to ensure usability on various devices.
+- **Wishlist Icon**  
+  - View all wishlisted courses using the heart icon in the navbar.
+  - Access wishlisted courses from the "My Learning" page.
 
-11. **Performance**
-    - The application should load quickly and handle concurrent users efficiently.
+#### Cart
+
+- **Cart Icon**  
+  - View and manage courses in the cart.
+
+#### User Authentication and Profile
+
+- **Login/Logout and Registration**  
+  - The navbar shows login/register options if the user is not authenticated (based on JWT).
+  - If authenticated, the navbar shows logout and view profile options.
+
+- **View Profile**  
+  - View and edit your profile information.
+
+#### Business Logic
+
+- **Course Progress Tracking**  
+  - Track user progress as registered, started, or completed.
+
+- **Discounts**  
+  - Earn a 10% discount on your next purchase after completing 3 courses.
+
+### Non-functional Requirements
+
+#### Security and Data Privacy
+
+- Securely hash user passwords.
+- Use JWT for secure authentication.
+- Implement proper access control for admin functionalities.
+
+#### Usability
+
+- Design an intuitive and easy-to-navigate interface.
+- Ensure a responsive design for usability on various devices.
+
+#### Performance
+
+- Optimize the application for quick loading and efficient handling of concurrent users.
