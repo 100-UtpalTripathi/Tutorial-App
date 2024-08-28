@@ -12,7 +12,7 @@ const Cart = () => {
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
-        const response = await axios.get(`https://localhost:7293/api/user/Cart/get/${userEmail}`,
+        const response = await axios.get(`https://tutorialappbackend.azurewebsites.net/api/user/Cart/get/${userEmail}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -20,6 +20,7 @@ const Cart = () => {
           }
 
         );
+        //console.log(response.data.data);
         setCartItems(response.data.data || []);
       } catch (error) {
         console.error("Error fetching cart items:", error);
@@ -31,7 +32,7 @@ const Cart = () => {
 
   const handleRemoveFromCart = async (courseId, price) => {
     try {
-      await axios.delete("https://localhost:7293/api/user/Cart/delete", {
+      await axios.delete("https://tutorialappbackend.azurewebsites.net/api/user/Cart/delete", {
         headers: { "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("token")}`
          },
@@ -55,7 +56,7 @@ const Cart = () => {
     if (!selectedCourse) return;
 
     try {
-      await axios.post("https://localhost:7293/api/user/course/Enrollment/add", {
+      await axios.post("https://tutorialappbackend.azurewebsites.net/api/user/course/Enrollment/add", {
         userEmail,
         courseId: selectedCourse.courseId,
         status: "Registered"
@@ -97,7 +98,7 @@ const Cart = () => {
                         className="btn btn-danger"
                         onClick={() => handleRemoveFromCart(course.courseId, course.price)}
                       >
-                        Remove from Cart
+                        Remove
                       </button>
                       &nbsp;
                       &nbsp;

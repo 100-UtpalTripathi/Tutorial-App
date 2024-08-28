@@ -18,7 +18,7 @@ const Quizzes = () => {
 
   const fetchQuiz = async () => {
     try {
-      const response = await axios.get(`https://localhost:7293/api/course/Quiz/get/${courseId}`,
+      const response = await axios.get(`https://tutorialappbackend.azurewebsites.net/api/course/Quiz/get/${courseId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -54,7 +54,7 @@ const Quizzes = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('https://localhost:7293/api/course/Quiz/create', formData,
+      await axios.post('https://tutorialappbackend.azurewebsites.net/api/course/Quiz/create', formData,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -70,7 +70,7 @@ const Quizzes = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://localhost:7293/api/course/Quiz/delete/${id}`,
+      await axios.delete(`https://tutorialappbackend.azurewebsites.net/api/course/Quiz/delete/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,

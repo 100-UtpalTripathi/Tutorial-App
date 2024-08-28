@@ -128,5 +128,41 @@ namespace TutorialApp.Services
         }
 
         #endregion
+
+        #region Get All Enrolled Courses
+        public async Task<IEnumerable<EnrolledCoursesDTO>> GetAllEnrolledCoursesAsync()
+        {
+            var enrollments = await _enrollmentRepository.Get();
+
+            if (enrollments == null || enrollments.Count() == 0)
+                throw new NoSuchEnrollmentFoundException("No enrollments found.");
+
+            var courses = new List<EnrolledCoursesDTO>();
+
+            foreach (var enrollment in enrollments)
+            {
+                var course = await _courseRepository.GetByKey(enrollment.CourseId);
+                if (course != null)
+                {
+                    var enrolledCourse = new EnrolledCoursesDTO
+                    {
+                        CourseId = course.CourseId,
+                        Title = course.Title,
+                        Description = course.Description,
+                        Status = enrollment.Status,
+                        CategoryName = course.CategoryName,
+                        Price = course.Price,
+                        CourseImageUrl = course.CourseImageUrl,
+                        InstructorName = course.InstructorName
+                    };
+
+                    courses.Add(enrolledCourse);
+                }
+            }
+
+            return courses;
+        }
+
+        #endregion
     }
 }

@@ -17,7 +17,7 @@ const Dashboard = () => {
 
   const fetchCoursesCount = async () => {
     try {
-      const response = await axios.get('https://localhost:7293/api/admin/Courses', {
+      const response = await axios.get('https://tutorialappbackend.azurewebsites.net/api/admin/Courses', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -31,12 +31,13 @@ const Dashboard = () => {
 
   const fetchEnrollments = async () => {
     try {
-      const userEmail = 'example@example.com'; // Replace with actual user email
-      const response = await axios.get(`https://localhost:7293/api/user/course/Enrollment/get/${userEmail}`, {
+      
+      const response = await axios.get(`https://tutorialappbackend.azurewebsites.net/api/user/course/Enrollment/get`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
+      console.log("Enrollments: " + response.data.data);
       setEnrollments(response.data.data || []); // Set empty array if data is null
     } catch (error) {
       console.error('Error fetching enrollments:', error);
@@ -46,7 +47,7 @@ const Dashboard = () => {
 
   const fetchCourses = async () => {
     try {
-      const response = await axios.get('https://localhost:7293/api/admin/Courses', {
+      const response = await axios.get('https://tutorialappbackend.azurewebsites.net/api/admin/Courses', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },

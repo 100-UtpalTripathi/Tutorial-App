@@ -23,13 +23,6 @@ namespace Tutorial_App
             var builder = WebApplication.CreateBuilder(args);
 
 
-            var keyVaultUri = "https://tutorialappvault.vault.azure.net/";
-
-            if(!string.IsNullOrEmpty(keyVaultUri))
-            {
-                builder.Configuration.AddAzureKeyVault(new Uri(keyVaultUri), new DefaultAzureCredential());
-            }
-
 
 
             // Add services to the container.
@@ -97,8 +90,8 @@ namespace Tutorial_App
             builder.Services.AddSingleton(x =>
             {
                 var configuration = x.GetRequiredService<IConfiguration>();
-                //return new BlobServiceClient(configuration.GetConnectionString("azureBlobStorage"));
-                return new BlobServiceClient(configuration["blobConnectionString"]);
+                return new BlobServiceClient(configuration.GetConnectionString("blobConnectionString"));
+                //return new BlobServiceClient(configuration["blobConnectionString"]);
             });
 
             #endregion
@@ -106,8 +99,8 @@ namespace Tutorial_App
             
             #region Contexts
             builder.Services.AddDbContext<TutorialAppContext>(
-                //options => options.UseSqlServer(builder.Configuration.GetConnectionString("defaultConnection"))
-                options => options.UseSqlServer(builder.Configuration["sqlConnectionString"])
+                options => options.UseSqlServer(builder.Configuration.GetConnectionString("defaultConnection"))
+                //options => options.UseSqlServer(builder.Configuration["sqlConnectionString"])
                 );
             #endregion
 
@@ -156,11 +149,14 @@ namespace Tutorial_App
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+            //if (app.Environment.IsDevelopment())
+            //{
+            //   app.UseSwagger();
+            //   app.UseSwaggerUI();
+            //}
+
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
             app.UseCors("AllowAll");
             app.UseAuthentication();

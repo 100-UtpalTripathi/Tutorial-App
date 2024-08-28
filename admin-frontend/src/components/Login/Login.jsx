@@ -18,7 +18,7 @@ const Login = () => {
     setError(null);
 
     try {
-      const response = await axios.post('https://localhost:7293/api/Admin/login', {
+      const response = await axios.post('https://tutorialappbackend.azurewebsites.net/api/Admin/login', {
         email,
         password,
       }, {

@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "secrets1": {
+      "ignored": "true",
+      "type": "secrets.keyVault"
+    },
+    "mssql1": {
+      "ignored": "true",
+      "type": "mssql"
+    },
+    "storage1": {
+      "ignored": "true",
+      "type": "storage"
+    },
+    "identityapp1": {
+      "ignored": "true",
+      "type": "identityapp"
+    },
+    "apis1": {
+      "ignored": "true",
+      "type": "apis"
+    }
+  }
+}

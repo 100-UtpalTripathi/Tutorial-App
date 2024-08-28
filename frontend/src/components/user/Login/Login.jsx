@@ -18,7 +18,7 @@ const Login = () => {
     setError(null);
 
     try {
-      const response = await axios.post('https://localhost:7293/api/Auth/user/login', {
+      const response = await axios.post('https://tutorialappbackend.azurewebsites.net/api/Auth/user/login', {
         email,
         password,
       }, {
@@ -27,8 +27,8 @@ const Login = () => {
         },
       });
 
-      console.log("Full response:", response);
-      console.log("Response data:", response.data);
+      //console.log("Full response:", response);
+      //console.log("Response data:", response.data);
 
       const { statusCode, statusMessage, data } = response.data;
 

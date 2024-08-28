@@ -100,7 +100,7 @@ namespace TutorialApp.Services
         public async Task<IEnumerable<Course>> GetCartItemsByUserAsync(string userEmail)
         {
             var existingCartItems = await _cartRepository.Get();
-            if(existingCartItems == null)
+            if (existingCartItems == null)
             {
                 return new List<Course>();
             }
@@ -115,12 +115,18 @@ namespace TutorialApp.Services
                 var course = await _courseRepository.GetByKey(courseId);
                 if (course != null)
                 {
+                    var cartItem = cartItems.FirstOrDefault(c => c.CourseId == courseId);
+                    if (cartItem != null)
+                    {
+                        course.Price = cartItem.Price; // Update the course price with the price from the cart item
+                    }
                     courses.Add(course);
                 }
             }
 
             return courses;
         }
+
 
         #endregion
     }

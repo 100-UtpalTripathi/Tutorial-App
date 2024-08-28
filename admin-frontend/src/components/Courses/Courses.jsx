@@ -26,6 +26,10 @@ const Courses = () => {
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(Infinity);
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(3);
+
   const categories = [
     "Web Development",
     "Mobile Development",
@@ -50,7 +54,7 @@ const Courses = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "https://localhost:7293/api/admin/Courses",
+        "https://tutorialappbackend.azurewebsites.net/api/admin/Courses",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -126,7 +130,7 @@ const Courses = () => {
     try {
       if (editMode) {
         await axios.put(
-          `https://localhost:7293/api/admin/Courses/update/${selectedCourse.courseId}`,
+          `https://tutorialappbackend.azurewebsites.net/api/admin/Courses/update/${selectedCourse.courseId}`,
           data,
           {
             headers: {
@@ -137,7 +141,7 @@ const Courses = () => {
         );
       } else {
         await axios.post(
-          "https://localhost:7293/api/admin/Courses/create",
+          "https://tutorialappbackend.azurewebsites.net/api/admin/Courses/create",
           data,
           {
             headers: {
@@ -157,7 +161,7 @@ const Courses = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `https://localhost:7293/api/admin/Courses/delete/${id}`, {
+        `https://tutorialappbackend.azurewebsites.net/api/admin/Courses/delete/${id}`, {
           headers: {
             "Authorization": `Bearer ${localStorage.getItem("token")}`,
           },
@@ -182,6 +186,16 @@ const Courses = () => {
       course.price <= maxPrice
     );
   });
+
+  // Pagination logic
+  const indexOfLastCourse = currentPage * itemsPerPage;
+  const indexOfFirstCourse = indexOfLastCourse - itemsPerPage;
+  const currentCourses = filteredCourses.slice(indexOfFirstCourse, indexOfLastCourse);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Calculate total pages
+  const totalPages = Math.ceil(filteredCourses.length / itemsPerPage);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -236,13 +250,13 @@ const Courses = () => {
           />
         </div>
       </div>
-
+            &nbsp;&nbsp; &nbsp;
       <button className="btn btn-primary mb-3" onClick={() => handleShow()}>
         Add New Course
       </button>
       <div className="row">
-        {Array.isArray(filteredCourses) && filteredCourses.length > 0 ? (
-          filteredCourses.map((course) => (
+        {Array.isArray(currentCourses) && currentCourses.length > 0 ? (
+          currentCourses.map((course) => (
             <div className="col-md-4 mb-4" key={course.courseId}>
               <CourseCard
                 course={course}
@@ -255,6 +269,23 @@ const Courses = () => {
           <div>No courses available</div>
         )}
       </div>
+
+      {/* Pagination */}
+      <nav aria-label="Page navigation">
+        <ul className="pagination">
+          <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+            <button className="page-link" onClick={() => paginate(currentPage - 1)}>&laquo;</button>
+          </li>
+          {[...Array(totalPages).keys()].map(number => (
+            <li key={number + 1} className={`page-item ${currentPage === number + 1 ? 'active' : ''}`}>
+              <button className="page-link" onClick={() => paginate(number + 1)}>{number + 1}</button>
+            </li>
+          ))}
+          <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+            <button className="page-link" onClick={() => paginate(currentPage + 1)}>&raquo;</button>
+          </li>
+        </ul>
+      </nav>
 
       {/* Modal for form */}
       {show && (

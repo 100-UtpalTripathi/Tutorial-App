@@ -27,7 +27,7 @@ const ManageQuestions = () => {
   const fetchQuestions = async () => {
     try {
       const response = await axios.get(
-        `https://localhost:7293/api/Question/get/${quizId}`, {
+        `https://tutorialappbackend.azurewebsites.net/api/Question/get/${quizId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
@@ -74,8 +74,8 @@ const ManageQuestions = () => {
     e.preventDefault();
   
     const apiUrl = editingQuestion
-      ? `https://localhost:7293/api/Question/update/${editingQuestion.questionId}`
-      : "https://localhost:7293/api/Question/add";
+      ? `https://tutorialappbackend.azurewebsites.net/api/Question/update/${editingQuestion.questionId}`
+      : "https://tutorialappbackend.azurewebsites.net/api/Question/add";
   
     try {
       setFormData({ ...formData, quizId: parseInt(quizId) }); // Ensure quizId is an integer
@@ -121,7 +121,7 @@ const ManageQuestions = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://localhost:7293/api/Question/delete/${id}`,
+      await axios.delete(`https://tutorialappbackend.azurewebsites.net/api/Question/delete/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,

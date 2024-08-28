@@ -11,7 +11,7 @@ const Wishlist = () => {
   useEffect(() => {
     const fetchWishlistedCourses = async () => {
       try {
-        const response = await axios.get(`https://localhost:7293/api/user/course/Wishlist/get/${userEmail}`);
+        const response = await axios.get(`https://tutorialappbackend.azurewebsites.net/api/user/course/Wishlist/get/${userEmail}`);
         setWishlistedCourses(response.data.data || []);
       } catch (error) {
         console.error('Error fetching wishlisted courses:', error);
@@ -24,7 +24,7 @@ const Wishlist = () => {
 
   const handleRemoveFromWishlist = async (courseId) => {
     try {
-      await axios.delete('https://localhost:7293/api/user/course/Wishlist/remove', {
+      await axios.delete('https://tutorialappbackend.azurewebsites.net/api/user/course/Wishlist/remove', {
         headers: { 'Content-Type': 'application/json' },
         data: { userEmail, courseId }
       });
@@ -39,7 +39,7 @@ const Wishlist = () => {
   return (
     <>
       <div className="container mt-4">
-        <h1>Wishlist</h1>
+        <h1>My Wishlists</h1>
         <div className="row">
           {wishlistedCourses.length > 0 ? (
             wishlistedCourses.map((course) => (

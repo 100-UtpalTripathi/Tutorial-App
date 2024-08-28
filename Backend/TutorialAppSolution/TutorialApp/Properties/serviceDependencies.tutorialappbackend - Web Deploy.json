@@ -1,0 +1,44 @@
+{
+  "dependencies": {
+    "secrets1": {
+      "ignored": "true",
+      "type": "secrets",
+      "connectionId": "VaultUri",
+      "dynamicId": null
+    },
+    "mssql1": {
+      "ignored": "true",
+      "type": "mssql",
+      "connectionId": "sqlConnectionString",
+      "dynamicId": null
+    },
+    "mssql2": {
+      "ignored": "true",
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:defaultConnection"
+    },
+    "storage1": {
+      "ignored": "true",
+      "type": "storage",
+      "connectionId": "blobConnectionString",
+      "dynamicId": null
+    },
+    "storage2": {
+      "ignored": "true",
+      "type": "storage",
+      "connectionId": "ConnectionStrings:blobConnectionString"
+    },
+    "secrets2": {
+      "ignored": "true",
+      "type": "secrets.keyVault"
+    },
+    "apis2": {
+      "ignored": "true",
+      "type": "apis.azure"
+    },
+    "identityapp1": {
+      "ignored": "true",
+      "type": "identityapp"
+    }
+  }
+}

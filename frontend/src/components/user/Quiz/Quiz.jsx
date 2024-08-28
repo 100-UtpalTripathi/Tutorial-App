@@ -14,7 +14,7 @@ const Quiz = () => {
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-        const response = await axios.get(`https://localhost:7293/api/course/Quiz/get/${courseId}`);
+        const response = await axios.get(`https://tutorialappbackend.azurewebsites.net/api/course/Quiz/get/${courseId}`);
         //console.log(response.data.data.questions);
         setQuestions(response.data.data.questions || []);
         

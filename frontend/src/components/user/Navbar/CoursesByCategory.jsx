@@ -15,12 +15,16 @@ const CoursesByCategory = () => {
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(Infinity);
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(3);
+
   useEffect(() => {
     const fetchCourses = async () => {
       try {
         const decodedCategory = decodeURIComponent(categoryId);
         const response = await axios.get(
-          `https://localhost:7293/api/User/courses/get/${decodedCategory}`
+          `https://tutorialappbackend.azurewebsites.net/api/User/courses/get/${decodedCategory}`
         );
         setCourses(response.data.data);
         setLoading(false);
@@ -46,13 +50,22 @@ const CoursesByCategory = () => {
     );
   });
 
+  // Pagination logic
+  const indexOfLastCourse = currentPage * itemsPerPage;
+  const indexOfFirstCourse = indexOfLastCourse - itemsPerPage;
+  const currentCourses = filteredCourses.slice(indexOfFirstCourse, indexOfLastCourse);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const totalPages = Math.ceil(filteredCourses.length / itemsPerPage);
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error fetching courses: {error.message}</p>;
 
   return (
     <>
-    <br></br>
-    <br></br>
+      <br />
+      <br />
       <div className="filters mb-3">
         <input
           type="text"
@@ -70,7 +83,7 @@ const CoursesByCategory = () => {
               setMinPrice(e.target.value ? parseInt(e.target.value) : 0)
             }
             className="form-control mr-3"
-          />{" "}
+          />
           &nbsp; _ &nbsp;
           <input
             type="number"
@@ -84,14 +97,31 @@ const CoursesByCategory = () => {
         </div>
       </div>
       <div className="courses-container">
-        {filteredCourses.length > 0 ? (
-          filteredCourses.map((course) => (
+        {currentCourses.length > 0 ? (
+          currentCourses.map((course) => (
             <CourseCard key={course.courseId} course={course} />
           ))
         ) : (
           <p>No courses available for this category.</p>
         )}
       </div>
+
+      {/* Pagination */}
+      <nav aria-label="Page navigation">
+        <ul className="pagination">
+          <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+            <button className="page-link" onClick={() => paginate(currentPage - 1)}>&laquo;</button>
+          </li>
+          {[...Array(totalPages).keys()].map(number => (
+            <li key={number + 1} className={`page-item ${currentPage === number + 1 ? 'active' : ''}`}>
+              <button className="page-link" onClick={() => paginate(number + 1)}>{number + 1}</button>
+            </li>
+          ))}
+          <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+            <button className="page-link" onClick={() => paginate(currentPage + 1)}>&raquo;</button>
+          </li>
+        </ul>
+      </nav>
     </>
   );
 };

@@ -36,7 +36,7 @@ const Signup = () => {
       formData.append('Password', password);
       formData.append('ImageUri', '');
 
-      const response = await axios.post('https://localhost:7293/api/Auth/user/register', formData, {
+      const response = await axios.post('https://tutorialappbackend.azurewebsites.net/api/Auth/user/register', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

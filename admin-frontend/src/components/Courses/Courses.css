@@ -146,3 +146,56 @@ button.close {
 .modal-title{
   color: #e0e0e0;
 }
+
+
+/* Courses.css */
+
+/* Pagination container */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+/* Pagination items */
+.pagination .page-item {
+  margin: 0 2px;
+}
+
+/* Pagination link */
+.pagination .page-link {
+  padding: 0.5rem 0.75rem;
+  margin: 0;
+  line-height: 1.25;
+  border-radius: 0.25rem;
+  color: #007bff;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+}
+
+/* Active pagination link */
+.pagination .page-item.active .page-link {
+  z-index: 1;
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+/* Disabled pagination link */
+.pagination .page-item.disabled .page-link {
+  color: #6c757d;
+  pointer-events: none;
+  background-color: #fff;
+  border-color: #dee2e6;
+}
+
+/* Modal styling */
+.modal-content {
+  border-radius: 0.5rem;
+}
+
+/* Form inputs and labels */
+.form-group label {
+  font-weight: bold;
+}

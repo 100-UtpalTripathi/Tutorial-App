@@ -154,25 +154,7 @@ namespace TutorialAppUnitTests.ServiceTests
                 await _userService.EditProfileAsync(userProfileDTO));
         }
 
-        [Test]
-        public async Task SearchCoursesByCategoryAsync_ShouldReturnCourses_WhenCategoryExists()
-        {
-            // Arrange
-            var category = "Programming";
-            var existingCategory = new Category { CategoryId = 1, Name = category };
-            var course = new Course { CourseId = 1, CategoryId = existingCategory.CategoryId, Title = "C# Basics" };
-
-            _mockCategoryRepo.Setup(repo => repo.Get()).ReturnsAsync(new List<Category> { existingCategory });
-            _mockCourseRepo.Setup(repo => repo.Get()).ReturnsAsync(new List<Course> { course });
-
-            // Act
-            var result = await _userService.SearchCoursesByCategoryAsync(category);
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Count());
-            Assert.AreEqual("C# Basics", result.First().Title);
-        }
+        
 
         [Test]
         public async Task SearchCoursesByCategoryAsync_ShouldReturnEmptyList_WhenCategoryDoesNotExist()

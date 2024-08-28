@@ -13,6 +13,10 @@ const CoursesQuiz = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(3);
+
   const navigate = useNavigate();
 
   const categories = [
@@ -37,13 +41,11 @@ const CoursesQuiz = () => {
 
   const fetchCourses = async () => {
     try {
-      const response = await axios.get('https://localhost:7293/api/admin/Courses',
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        }
-      );
+      const response = await axios.get('https://tutorialappbackend.azurewebsites.net/api/admin/Courses', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
       setCourses(response.data.data);
       setLoading(false);
     } catch (error) {
@@ -75,6 +77,15 @@ const CoursesQuiz = () => {
     (categoryFilter === '' || course.categoryName === categoryFilter) &&
     (course.price >= minPrice && course.price <= maxPrice)
   );
+
+  // Pagination logic
+  const indexOfLastCourse = currentPage * itemsPerPage;
+  const indexOfFirstCourse = indexOfLastCourse - itemsPerPage;
+  const currentCourses = filteredCourses.slice(indexOfFirstCourse, indexOfLastCourse);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const totalPages = Math.ceil(filteredCourses.length / itemsPerPage);
 
   const handleCourseClick = (courseId) => {
     navigate(`/quizzes/${courseId}`);
@@ -123,9 +134,8 @@ const CoursesQuiz = () => {
 
       <h4>Select a course to manage quizzes: </h4>
       <div className="row">
-        
-        {filteredCourses.length > 0 ? (
-          filteredCourses.map(course => (
+        {currentCourses.length > 0 ? (
+          currentCourses.map(course => (
             <div className="col-md-4 mb-4" key={course.courseId}>
               <CourseCard
                 course={course}
@@ -137,6 +147,23 @@ const CoursesQuiz = () => {
           <div>No courses available</div>
         )}
       </div>
+
+      {/* Pagination */}
+      <nav aria-label="Page navigation">
+        <ul className="pagination">
+          <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+            <button className="page-link" onClick={() => paginate(currentPage - 1)}>&laquo;</button>
+          </li>
+          {[...Array(totalPages).keys()].map(number => (
+            <li key={number + 1} className={`page-item ${currentPage === number + 1 ? 'active' : ''}`}>
+              <button className="page-link" onClick={() => paginate(number + 1)}>{number + 1}</button>
+            </li>
+          ))}
+          <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+            <button className="page-link" onClick={() => paginate(currentPage + 1)}>&raquo;</button>
+          </li>
+        </ul>
+      </nav>
     </div>
   );
 };

@@ -13,7 +13,7 @@ const MyLearning = () => {
   useEffect(() => {
     const fetchEnrolledCourses = async () => {
       try {
-        const response = await axios.get(`https://localhost:7293/api/user/course/Enrollment/get/${userEmail}`);
+        const response = await axios.get(`https://tutorialappbackend.azurewebsites.net/api/user/course/Enrollment/get/${userEmail}`);
         setEnrolledCourses(response.data.data || []);
       } catch (error) {
         console.error("Error fetching enrolled courses:", error);
@@ -34,7 +34,7 @@ const MyLearning = () => {
     if (!selectedCourse) return;
 
     try {
-      await axios.put("https://localhost:7293/api/user/course/Enrollment/status", {
+      await axios.put("https://tutorialappbackend.azurewebsites.net/api/user/course/Enrollment/status", {
         userEmail,
         courseId: selectedCourse.courseId,
         status: "Completed"
@@ -58,7 +58,7 @@ const MyLearning = () => {
   return (
     <>
       <div className="container mt-4">
-        <h2>Your Learnings</h2>
+        <h2>My Learnings</h2>
         <div className="row">
           {enrolledCourses.length > 0 ? (
             enrolledCourses.map((course) => (

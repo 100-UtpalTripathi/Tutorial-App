@@ -8,5 +8,7 @@ namespace TutorialApp.Interfaces
         Task<Enrollment> EnrollCourseAsync(EnrollmentDTO enrollmentDTO);
         Task<IEnumerable<EnrolledCoursesDTO>> GetEnrolledCoursesByUserAsync(string userEmail);
         Task<Enrollment> UpdateEnrollmentStatusAsync(EnrollmentDTO enrollmentDTO);
+
+        Task<IEnumerable<EnrolledCoursesDTO>> GetAllEnrolledCoursesAsync();
     }
 }

@@ -119,5 +119,34 @@ namespace TutorialApp.Controllers
         }
 
         #endregion
+
+        // Get all enrolled courses
+        [HttpGet("get")]
+        public async Task<IActionResult> GetAllEnrolledCourses()
+        {
+            try
+            {
+                var courses = await _enrollmentService.GetAllEnrolledCoursesAsync();
+                if (courses == null || !courses.Any())
+                {
+                    var errorResponse = new ApiResponse<string>((int)HttpStatusCode.NotFound, "No enrolled courses found", null);
+                    return Ok(errorResponse);
+                }
+                var response = new ApiResponse<IEnumerable<EnrolledCoursesDTO>>((int)HttpStatusCode.OK, "Enrolled courses retrieved successfully", courses);
+                return Ok(response);
+            }
+            catch (NoSuchEnrollmentFoundException ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.NotFound, ex.Message, null);
+                return Ok(errorResponse);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                var errorResponse = new ApiResponse<string>((int)HttpStatusCode.InternalServerError, ex.Message, null);
+                return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
+            }
+        }   
     }
 }

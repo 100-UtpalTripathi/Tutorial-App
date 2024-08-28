@@ -12,7 +12,7 @@ const CourseCard = ({ course }) => {
     const checkWishlistStatus = async () => {
       try {
         const response = await axios.get(
-          `https://localhost:7293/api/user/course/Wishlist/get/${userEmail}`
+          `https://tutorialappbackend.azurewebsites.net/api/user/course/Wishlist/get/${userEmail}`
         );
         const wishlistedCourses = response.data.data;
         if (!wishlistedCourses) return;
@@ -31,7 +31,7 @@ const CourseCard = ({ course }) => {
     try {
       if (isWishlisted) {
         await axios.delete(
-          "https://localhost:7293/api/user/course/Wishlist/remove",
+          "https://tutorialappbackend.azurewebsites.net/api/user/course/Wishlist/remove",
           {
             headers: {
               "Content-Type": "application/json",
@@ -45,7 +45,7 @@ const CourseCard = ({ course }) => {
         toast.success('Course removed from wishlist!');
       } else {
         await axios.post(
-          "https://localhost:7293/api/user/course/Wishlist/add",
+          "https://tutorialappbackend.azurewebsites.net/api/user/course/Wishlist/add",
           {
             userEmail,
             courseId: course.courseId,
@@ -62,7 +62,7 @@ const CourseCard = ({ course }) => {
 
   const handleAddToCart = async () => {
     try {
-      const response = await axios.post("https://localhost:7293/api/user/Cart/add", {
+      const response = await axios.post("https://tutorialappbackend.azurewebsites.net/api/user/Cart/add", {
         userEmail,
         courseId: course.courseId,
         price: course.price,
@@ -74,8 +74,11 @@ const CourseCard = ({ course }) => {
         },
       }
     );
-      if(response.data.data)
+      if(response.data.data != null)
+      {
+        //console.log(response.data.data);
         toast.success('Course added to cart!');
+      }
       else
         toast.error('Course already in cart!');
     } catch (error) {

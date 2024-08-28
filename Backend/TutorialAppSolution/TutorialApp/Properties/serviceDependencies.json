@@ -2,6 +2,21 @@
   "dependencies": {
     "apis1": {
       "type": "apis"
+    },
+    "secrets1": {
+      "type": "secrets",
+      "connectionId": "VaultUri",
+      "dynamicId": null
+    },
+    "mssql1": {
+      "type": "mssql",
+      "connectionId": "sqlConnectionString",
+      "dynamicId": null
+    },
+    "storage1": {
+      "type": "storage",
+      "connectionId": "blobConnectionString",
+      "dynamicId": null
     }
   }
 }

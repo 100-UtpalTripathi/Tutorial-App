@@ -1,11 +1,18 @@
-* General Navbar Styles */
+
+/* Navbar.css */
+
 .navbar {
   background-color: #343a40; /* Dark background for navbar */
   padding: 0.5rem 1rem; /* Adjust padding to prevent overflow */
   display: flex; /* Use flexbox to align items */
   justify-content: space-between; /* Space between brand and items */
   align-items: center; /* Center items vertically */
+  position: -webkit-sticky; /* For Safari */
+  position: sticky; /* Stick to top on scroll */
+  top: 0; /* Stick at the top */
+  z-index: 1000; /* Ensure the navbar is above other content */
 }
+
 
 /* Navbar Brand */
 .navbar-brand {
